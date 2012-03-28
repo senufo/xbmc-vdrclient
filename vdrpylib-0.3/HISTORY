@@ -1,0 +1,32 @@
+ vdrpylib Revision History
+
+ + denotes a new feature
+ * denotes a bugfix/some change
+ - denotes a removed feature
+
+
+2004-xx-xx: Version 0.3
+ + New maintainer.
+ * Modifications to work with VDR versions 1.3.x.
+ * Modifications to work with Python versions 2.3.x.
+
+
+2002-11-25: Version 0.2
+ + The standard Python distutils are now used for distribution and
+   installation
+ * vdr.py: data files are now located based on the given video paths
+ + README: added an overview section
+ + added a Timer class representing VDR timers
+ + svdrp.py: lstt() returns a list of Timer objects
+ + vdr.py: retrieve information about timers from disk or via SVDRP
+   and represent them as Timer objects
+ + added a Recording class representing VDR recordings
+ + svdrp.py: lstr() returns a list of Recording objects
+ + vdr.py: retrieve information about recordings from disk or via
+   SVDRP and represent them as Recording objects
+ * svdrp.py: lstc() now supports an argument identifying a specific
+   channel
+
+
+2002-10-12: Version 0.1
+Initial Revision

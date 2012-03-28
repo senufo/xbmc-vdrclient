@@ -1,0 +1,43 @@
+Installation of the VDR Python Library
+--------------------------------------
+
+vdrpylib is packaged with the Python distutils distribution
+utilities. In order to install vdrpylib follow these steps:
+
+1. extract the vdrpylib archive to a directory of your choice.
+2. change into the vdrpylib directory created when extracting the
+   archive.
+3. start the library installation by running the command
+   python setup.py install
+   at your command line. This install the library into the proper
+   location where Python keeps third-party libraries.
+
+
+Running Included Applications
+-----------------------------
+
+You can invoke applications coming with the library by typing:
+python app/app.py
+at your command line. In order to run e.g. expg, type:
+python expg/expg.py <options>
+By setting the file permissions of expg.py to executable you can
+call it directly like a shell script.
+
+
+Developing with vdrpylib
+------------------------
+
+To utilize vdrpylib in your program, import the classes from the vdr
+package as follows:
+
+import vdr.svdrp
+
+Each first level class resides in its own module. The module name is
+always the lowercase class name. You can instantiate and use classes
+as in the following example:
+
+import vdr.svdrp
+s = vdr.svdrp.SVDRP('localhost')
+print s.write_cmd('lstc')
+s.write('quit\n')
+s.close()

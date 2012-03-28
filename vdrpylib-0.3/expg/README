@@ -1,0 +1,34 @@
+Extended Electronic Program Guide ('expg')
+------------------------------------------
+
+This program enhances the EPG data of a VDR instance by retrieving
+additional information from the WWW.
+
+It is based on the VDR Python Library(http://sourceforge.net/projects/vdrpylib/)
+
+The author can be contacted at nooneelse@users.sourceforge.net
+
+
+Requirements
+------------
+Python >= 2.1
+VDR < 1.1.12
+
+
+Usage
+-----
+
+Invoking expg:
+--------------
+expg requires the VDR Python Library (vdrpylib) as part of which you probably
+received expg itself). Please make sure that vdrpylib is installed properly
+as described in its INSTALL file.
+
+- Posix (Linux, etc.):
+  Invoke expg by running the python script expg/expg.py in the installation
+  directory of vdrpylib.
+
+Command Line Arguments:
+-----------------------
+Please run 'expg.py -h' to learn about the available command line arguments and
+their meaning.

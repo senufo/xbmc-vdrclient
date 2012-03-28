@@ -1,0 +1,71 @@
+VDR Python Library ('vdrpylib')
+-------------------------------
+
+This is a programming library written in Python (http://python.org/) for the
+Video Disk Recorder (VDR) project (http://www.cadsoft.de/people/kls/vdr/).
+
+Please see the INSTALL file for details on how to install this program on your
+computer.
+
+For further information please refer to http://sourceforge.net/projects/vdrpylib/
+
+The author can be contacted at nooneelse@users.sourceforge.net
+
+
+Applications
+------------
+
+Also part of this package are the following applications based on vdrpylib:
+
+- Extended Electronic Program Guide ('expg')
+
+Please see the README files in the coresponding sub-directories for additional
+information
+
+
+Library Concepts and Overview
+-----------------------------
+
+The idea of this library is to represent the data available from an
+instance of VDR as a class hierarchy. It shall relieve the programmer
+of the burden to directly interact with VDR's interfaces like
+configuration files or SVDRP. Instead a programmer can examine and
+manipulate timers, recordings, etc. at the class level.
+
+Class Hierarchy:
+
+The central class of the library is the VDR class serving both as the
+main data container and as a control interface to VDR. It collects
+objects of these types:
+- Channel
+- Timer
+- Recording
+
+The Channel class collects objects of these types:
+- Event (EPG events)
+
+The Timer class only contains singular members.
+
+The Recording class collects objects of these types:
+- Mark (editing mark)
+
+Class Dependencies:
+
+The library tries to encapsulate all data entities in classes. Many
+of those entities are associated with each other, e.g. timers and EPG
+events are associated with channels.
+VDR represents such associations in a very simple form (often an
+index into a global list of the associated object). Thus, vdrpylib
+needs to retrieve all available objects from VDR (channels in this
+example) in order to provide a class view of such associations (so
+that a timer object actually provides a channel object and not only
+the integer index).
+Of course this is rather expensive and may be unwanted if all the
+programmer needs is a single object type (e.g. she may want to simply
+parse the timers file).
+Thus, vdrpylib uses the VDR class as a central data container which
+allows classes to establish references to each other. If an object
+like Timer is supplied with a VDR object, it can represent channels
+as the objects it finds in the VDR object. If the Timer is not passed
+an instance of class VDR, it merely serves itself as a container for
+timer data.
