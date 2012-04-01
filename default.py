@@ -38,7 +38,13 @@ VDR_PORT = 6419
 VDR_PORT = 2001
 #Label SKIN XML
 
-CHAINE = 101
+#ID des boutons dans .xml
+STATUS_LABEL    = 100
+CHAINE          = 101
+DESC_BODY       = 102
+FEEDS_LIST      = 120
+QUIT            = 1004
+VIDEO           = 1006
 
 class VDRWindow(xbmcgui.WindowXML):
     """
@@ -73,11 +79,12 @@ class VDRWindow(xbmcgui.WindowXML):
         #print 'CH EPG = %s ' % ch
         Dialog = xbmcgui.DialogProgress()
         #    locstr = __addon__.getLocalizedString(id=600) #Get News
-        Dialog.create('Please Wait')
+        Dialog.create('Get EPG data')
         #locstr = __addon__.getLocalizedString(id=601) #Please wait
-        Dialog.update(0, 'update')
+        Dialog.update(0, 'Please wait')
         #Variable pour la progression dans la boite de dialogue²
         up = 1
+        self.getControl( 120 ).reset()
 
         for c_name in self.channels:
             #print "CHinit = %s " % ch
@@ -89,7 +96,7 @@ class VDRWindow(xbmcgui.WindowXML):
         Titre, SousTitre, Description = ('','','')
         ev = event.Event()
         #nbEPG = len(self.vdrpclient.read_response())
-        NbEPG = 100
+        NbEPG = 500
         for num, flag, message in self.vdrpclient.read_response():
             print "MESSAGE = %s " % message
             if message[0] == 'T':
@@ -110,30 +117,37 @@ class VDRWindow(xbmcgui.WindowXML):
 
             if message[0] == 'e':
                 #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
-                time_start = time.gmtime(int(ev.start))
+                #Tient compte du fuseau horaire
+                if time.daylight != 0:
+                    time_start = int(ev.start) - time.altzone
+                else:
+                    time_start = int(ev.start)
+                time_start = time.gmtime(int(time_start))
                 stop = ev.start + ev.dur
                 time_stop = time.gmtime(int(stop))
                 #print "Start = %s, durée = %s, id = %s" % (ev.start,ev.dur,ev.id)a
                 print ('%02d:%02d - %02d:%02di => %s' %
                     (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
                     ev.title))
+
                 epg_data = ('%02d:%02d - %02d:%02d : %s' %
                     (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
                     ev.title))
 
                 listEPGItem = xbmcgui.ListItem( label=epg_data)
-                listEPGItem.setProperty( "description", ev.desc )
+                description = '%s\n====\n%s' % (ev.title, ev.desc )
+                listEPGItem.setProperty( "description", description )
                 listEPGItem.setProperty( "date", time.strftime('%A, %d/%m/%Y',time_start))
                 self.getControl( 120 ).addItem( listEPGItem )
                 Titre, SousTitre, Description = ('','','')
             up2 = int((up*100)/NbEPG)
             #print "UP = %d " % up
             up += 1
-            Dialog.update(up2, 'Get EPG', 'Please wait')
+            Dialog.update(up2, 'Please wait')
         Dialog.close()       
 
         self.vdrpclient.close()
-
+        self.getControl( CHAINE ).setLabel( '%s' % ch )
  
     def onClick( self, controlId ):
         #print "onClick controId = %d " % controlId

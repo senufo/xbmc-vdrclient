@@ -96,7 +96,7 @@ for num, flag, message in client.read_response():
         name,nametokens,name_tok,freq,pol,source,srate,vpid,apids,tpid,ca)
     channels.append(name)
 
-client.send_command('lste 1')
+client.send_command('lste 8')
 
 for channel in channels:
     print channel
@@ -124,9 +124,12 @@ for num, flag, message in client.read_response():
 
     if message[0] == 'e':
         #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
+        ev.start = ev.start - time.altzone
         time_start = time.gmtime(int(ev.start))
         stop = ev.start + ev.dur
         time_stop = time.gmtime(int(stop))
+        print "DAYLIGHT ", time.daylight
+        print "ALTZONE", time.altzone
         #print '%02d:%02d - %02d:%02d' % (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min)
         #print '\nTitre = %s\nSousTitre = %s\n Desc = %s ' % (
         #                                ev.title,ev.subtitle,ev.desc)
