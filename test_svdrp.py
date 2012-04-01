@@ -52,11 +52,52 @@ client = SVDRPClient(VDR_HOST, VDR_PORT)
 #num, message = client.confirm_shutdown()
 #client.send_command('chan')
 #client.send_command('help')
-client.send_command('lste 1')
-#client.send_command('lstc')
+#client.send_command('lste 1')
+client.send_command('lstc')
 #num = 0
 #message = client.read_line()
 #print num, message
+channels = []
+for num, flag, message in client.read_response():
+    tokens = message.strip().split(':')
+    name = tokens[0]
+    m =  re.search('\d+ ',name)
+    no, name = re.split(' ',name,maxsplit=1)
+    #print "iNO = %s, %s" % (m.group(0), m.group(1))
+    print "iNO = %s" % no
+    nametokens = name.split(';')
+    name_tok = nametokens[0]
+    if len(nametokens)>1:
+        provider = nametokens[1]
+
+    freq = int(tokens[1])
+    pol = tokens[2]
+    source = tokens[3]
+    srate = int(tokens[4])
+    vpid = tokens[5]
+    apids = tokens[6]
+    tpid = int(tokens[7])
+    ca = tokens[8]
+    sid = tokens[9]
+    nid = tokens[10]
+    tid = tokens[11]
+    rid = tokens[12]
+
+    tokens = apids.split(';')
+    apids = map(str, tokens[0].split(','))
+
+    if len(tokens) == 2:
+        dpids = map(str, tokens[1].split(','))
+
+    #id = string.join([self.source, nid, tid,
+    #                               sid, rid], '-')
+
+    print "%s, %s,%s,%s,%s,%s,%s,%s,%s,%s,%si" % (
+        name,nametokens,name_tok,freq,pol,source,srate,vpid,apids,tpid,ca)
+    channels.append(name)
+
+for channel in channels:
+    print channel
 Titre, SousTitre, Description = ('','','')
 ev = event.Event()
 for num, flag, message in client.read_response():

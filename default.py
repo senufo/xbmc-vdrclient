@@ -8,9 +8,12 @@ import xbmcaddon
 #vdr modules
 import svdrp
 import event
+import channel
+
 #python modules
 import os, re
 import pickle
+import sys
 
 __author__     = "Senufo"
 __scriptid__   = "script.svdrpclient"
@@ -41,13 +44,29 @@ class VDRWindow(xbmcgui.WindowXML):
    
     def __init__(self, *args, **kwargs):
         if DEBUG == True: print "__INIT__"
-        self.vdrpclient = SVDRPClient(VDR_HOST, VDR_PORT)
-        client.send_command('lste 1')
-  
+        self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
+        self.vdrpclient.send_command('lstc')
+        self.channels = []
+        for num, flag, message in self.vdrpclient.read_response(): 
+            ch = channel.Channel(message)
+            self.channels.append(ch)
+        self.vdrpclient.close() 
+        for ch in self.channels:
+            print "CHinit = %s " % ch
+        
     def onInit( self ):
         if DEBUG == True: print "Branch Master"
-
+        for ch in self.channels:
+            print "CH = %s " % ch
+            listChannel = xbmcgui.ListItem(label=ch.name_tok)
+            listChannel.setProperty( "description", 'desc' )
+            listChannel.setProperty( "img" , 'img' )
+            listChannel.setProperty( "date" , 'date')
+            listChannel.setProperty( "video" , 'video' )
+ 
+            listChannel.setProperty("serveur", ch.name_tok )
+            self.getControl( 1200 ).addItem( listChannel )
    
-mydisplay = VDRWindow( "script-svdrpclient-main.xml" , __cwd__, "Default")
+mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__, "Default")
 mydisplay.doModal()
 del mydisplay
