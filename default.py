@@ -36,7 +36,9 @@ DEBUG = False
 VDR_HOST = '127.0.0.1'
 VDR_PORT = 6419
 VDR_PORT = 2001
+#Label SKIN XML
 
+CHAINE = 101
 
 class VDRWindow(xbmcgui.WindowXML):
     """
