@@ -78,10 +78,10 @@ class VDRWindow(xbmcgui.WindowXML):
     def getEPG(self, ch):
         #print 'CH EPG = %s ' % ch
         Dialog = xbmcgui.DialogProgress()
-        #    locstr = __addon__.getLocalizedString(id=600) #Get News
-        Dialog.create('Get EPG data')
-        #locstr = __addon__.getLocalizedString(id=601) #Please wait
-        Dialog.update(0, 'Please wait')
+        locstr = __addon__.getLocalizedString(id=600) #Get EPG data
+        Dialog.create(locstr)
+        locstr = __addon__.getLocalizedString(id=601) #Please wait
+        Dialog.update(0, locstr)
         #Variable pour la progression dans la boite de dialogue²
         up = 1
         self.getControl( 120 ).reset()
@@ -116,34 +116,38 @@ class VDRWindow(xbmcgui.WindowXML):
                 print 'getitme = %s ' % time.gmtime(int(ev.start))
 
             if message[0] == 'e':
-                #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
-                #Tient compte du fuseau horaire
-                if time.daylight != 0:
-                    time_start = int(ev.start) - time.altzone
-                else:
-                    time_start = int(ev.start)
-                time_start = time.gmtime(int(time_start))
-                stop = ev.start + ev.dur
-                time_stop = time.gmtime(int(stop))
-                #print "Start = %s, durée = %s, id = %s" % (ev.start,ev.dur,ev.id)a
-                print ('%02d:%02d - %02d:%02di => %s' %
-                    (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
-                    ev.title))
+                try:
+                    #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
+                    #Tient compte du fuseau horaire
+                    if time.daylight != 0:
+                        time_start = int(ev.start) - time.altzone
+                    else:
+                        time_start = int(ev.start)
+                    time_start = time.gmtime(int(time_start))
+                    stop = ev.start + ev.dur
+                    time_stop = time.gmtime(int(stop))
+                    #print "Start = %s, durée = %s, id = %s" % (ev.start,ev.dur,ev.id)a
+                    print ('%02d:%02d - %02d:%02d => %s' %
+                        (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
+                        ev.title))
 
-                epg_data = ('%02d:%02d - %02d:%02d : %s' %
-                    (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
-                    ev.title))
-
-                listEPGItem = xbmcgui.ListItem( label=epg_data)
-                description = '%s\n====\n%s' % (ev.title, ev.desc )
-                listEPGItem.setProperty( "description", description )
-                listEPGItem.setProperty( "date", time.strftime('%A, %d/%m/%Y',time_start))
-                self.getControl( 120 ).addItem( listEPGItem )
-                Titre, SousTitre, Description = ('','','')
+                    epg_data = ('%02d:%02d - %02d:%02d : %s' %
+                        (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
+                        ev.title))
+    
+                    listEPGItem = xbmcgui.ListItem( label=epg_data)
+                    description = '%s\n====\n%s\n====\n%s' % (ev.title, ev.subtitle, ev.desc )
+                    listEPGItem.setProperty( "description", description )
+                    listEPGItem.setProperty( "date", time.strftime('%A, %d/%m/%Y',time_start))
+                    self.getControl( 120 ).addItem( listEPGItem )
+                    Titre, SousTitre, Description = ('','','')
+                except:
+                    pass
             up2 = int((up*100)/NbEPG)
             #print "UP = %d " % up
             up += 1
-            Dialog.update(up2, 'Please wait')
+            locstr = __addon__.getLocalizedString(id=601) #Please wait
+            Dialog.update(up2, locstr)
         Dialog.close()       
 
         self.vdrpclient.close()
