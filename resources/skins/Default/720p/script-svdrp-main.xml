@@ -123,7 +123,7 @@
         <posx>300</posx>
         <posy>350</posy>
         <width>900</width>
-        <height>440</height>
+        <height>240</height>
         <font>font18</font>
         <textcolor>white</textcolor>
 	<!-- <aligny>center</aligny> -->
