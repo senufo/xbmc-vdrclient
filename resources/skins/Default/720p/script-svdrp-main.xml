@@ -85,7 +85,28 @@
         <width>1250</width>
         <height>2</height>
         <texture>GMseparator.png</texture>
-      </control>      
+</control>
+<control type="button" id="1006">
+          <description>button control Timers</description>
+          <posx>900</posx>
+          <posy>625</posy>
+          <width>135</width>
+          <height>35</height>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>true</visible>
+          <colordiffuse>FFFFFFFF</colordiffuse>
+          <label>$ADDON[script.svdrpclient 33603]</label>
+          <!-- <label>Play Video</label> -->
+          <font>font14</font>
+          <textcolor>FFFFFFFF</textcolor>
+          <disabledcolor>80FFFFFF</disabledcolor>
+          <onup>1200</onup>
+          <ondown>1200</ondown>
+          <onleft>120</onleft>
+          <onright>1004</onright>
+       </control>
+
 <!-- Bouton quitter -->
        <control type="button" id="1004">
           <description>button control quit</description>

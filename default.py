@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-iControl VDR with xbmc
+Control VDR with xbmc
 """
 #Modules xbmc
 import xbmc, xbmcgui
@@ -31,7 +31,7 @@ __resource__   = xbmc.translatePath( os.path.join( __cwd__, 'resources',
                                                   'lib' ) )
 sys.path.append (__resource__)
 
-DEBUG = False
+DEBUG = True
 # VDR server
 VDR_HOST = '127.0.0.1'
 VDR_PORT = 6419
@@ -44,9 +44,9 @@ CHAINE          = 101
 DESC_BODY       = 102
 FEEDS_LIST      = 120
 QUIT            = 1004
-VIDEO           = 1006
+TIMERS          = 1006
 
-class VDRWindow(xbmcgui.WindowXML):
+class EPGWindow(xbmcgui.WindowXML):
     """
     Window for VDR commands
     """
@@ -159,14 +159,58 @@ class VDRWindow(xbmcgui.WindowXML):
             label = self.getControl( controlId
                                    ).getSelectedItem().getProperty('serveur')
             self.getEPG(label)
-        elif (controlId == VIDEO):
+        elif (controlId == TIMERS):
             label = self.getControl( FEEDS_LIST
-                                   ).getSelectedItem().getProperty('video')
+                                   ).getSelectedItem().getProperty('description')
+            print 'LABEL = %s ' % label
 
         elif (controlId == QUIT):
             self.close()
 
-  
+class TIMERWindow(xbmcgui.WindowXML):
+    """
+    Window for Timer window
+    """
+   
+    def __init__(self, *args, **kwargs):
+        if DEBUG == True: print "__INIT__"
+
+class VDRWindow(xbmcgui.WindowXML):
+    """
+    Window for Timer window
+    """
+   
+    def __init__(self, *args, **kwargs):
+        if DEBUG == True: print "__INIT__"
+
+    def onInit( self ):
+        actions = ['Programmes','Programmation','Enregistrements']
+        if DEBUG == True: print "Init VDRWindow"
+        self.getControl( 1200 ).reset()
+
+        for action in actions:
+            listAction = xbmcgui.ListItem(label=action)
+            listAction.setProperty( "action", action )
+ 
+            self.getControl( 1200 ).addItem( listAction )
+
+    def onClick( self, controlId ):
+        #print "onClick controId = %d " % controlId
+        if (controlId == 1200):
+            print "onClick controId = %d " % controlId
+            label = self.getControl( controlId
+                                   ).getSelectedItem().getProperty('action')
+            epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
+            epgWIN.doModal()
+            del epgWIN
+        elif (controlId == TIMERS):
+            label = self.getControl( FEEDS_LIST
+                                   ).getSelectedItem().getProperty('description')
+            print 'LABEL = %s ' % label
+
+        elif (controlId == QUIT):
+            self.close()
+
 mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__, "Default")
 mydisplay.doModal()
 del mydisplay
