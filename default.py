@@ -43,7 +43,7 @@ VDR_PORT = 2001
 STATUS_LABEL    = 100
 CHAINE          = 101
 DESC_BODY       = 102
-FEEDS_LIST      = 120
+TIMERS_LIST      = 120
 QUIT            = 1004
 TIMERS          = 1006
 
@@ -194,14 +194,14 @@ class TIMERSWindow(xbmcgui.WindowXML):
             timers.append(ti.name)
         client.close()
 
-        self.getControl( 1200 ).reset()
+        self.getControl( TIMERS_LIST ).reset()
 
         for name in timers:
             print "TIMERS = %s " % name
             listTimers = xbmcgui.ListItem(label=name)
             listTimers.setProperty( "action", name )
  
-            self.getControl( 1200 ).addItem( listTimers )
+            self.getControl( TIMERS_LIST ).addItem( listTimers )
 
 
 class VDRWindow(xbmcgui.WindowXML):
