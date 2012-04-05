@@ -191,15 +191,16 @@ class TIMERSWindow(xbmcgui.WindowXML):
             print 'recu = %s, prio = %s' % (ti.recurrence, ti.prio)
             print 'lt = %s, act= %s ' % (ti.lifetime, ti.active)
             print ti.vdr
-            timers.append(ti.name)
+            timers.append(ti)
         client.close()
 
         self.getControl( TIMERS_LIST ).reset()
 
-        for name in timers:
-            print "TIMERS = %s " % name
-            listTimers = xbmcgui.ListItem(label=name)
-            listTimers.setProperty( "action", name )
+        for prog in timers:
+            print "TIMERS => %s " % str(prog.name)
+            listTimers = xbmcgui.ListItem(label=prog.name,
+                                          label2=str(prog.start))
+            listTimers.setProperty( "action", prog.name )
  
             self.getControl( TIMERS_LIST ).addItem( listTimers )
 
