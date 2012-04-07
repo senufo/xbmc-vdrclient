@@ -127,19 +127,22 @@ class EPGWindow(xbmcgui.WindowXML):
                 #START = Wed Apr 11 01:10:00 2012
                 #time.struct_time(tm_year=2012, tm_mon=4, tm_mday=10, tm_hour=23, tm_min=10, tm_sec=0, tm_wday=1, tm_yday=101, tm_isdst=0) 
                 print 'getitme = %s ' % time.gmtime(int(ev.start))
-
+            print "Mxx[0] = %s " % message[0]
             if message[0] == 'e':
+                print 'Messge = %s' % message
                 try:
+                #if 1:
                     #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
                     #Tient compte du fuseau horaire
                     if time.daylight != 0:
                         time_start = int(ev.start) - time.altzone
                     else:
                         time_start = int(ev.start)
+                    stop = time_start + ev.dur
                     time_start = time.gmtime(int(time_start))
-                    stop = ev.start + ev.dur
+                    #stop = ev.start + ev.dur
                     time_stop = time.gmtime(int(stop))
-                    #print "Start = %s, durée = %s, id = %s" % (ev.start,ev.dur,ev.id)a
+                    print "Start = %s, durée = %s, id = %s" % (ev.start,ev.dur,ev.id)
                     print ('%02d:%02d - %02d:%02d => %s' %
                         (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
                         ev.title))
@@ -155,6 +158,7 @@ class EPGWindow(xbmcgui.WindowXML):
                     self.getControl( 120 ).addItem( listEPGItem )
                     (ev.title, ev.subtitle, ev.desc ) = ('','','')
                 except:
+                    print "Unexpected error:", sys.exc_info()[0] 
                     pass
             up2 = int((up*100)/NbEPG)
             #print "UP = %d " % up
