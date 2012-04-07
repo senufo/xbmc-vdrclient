@@ -233,31 +233,40 @@ class VDRWindow(xbmcgui.WindowXML):
     def onInit( self ):
         actions = ['Programmes','Programmation','Enregistrements']
         if DEBUG == True: print "Init VDRWindow"
-        self.getControl( 1200 ).reset()
-        for action in actions:
-            listAction = xbmcgui.ListItem(label=action)
-            listAction.setProperty( "action", action )
-            self.getControl( 1200 ).addItem( listAction )
+        #self.getControl( 1200 ).reset()
+        #for action in actions:
+        #    listAction = xbmcgui.ListItem(label=action)
+        #    listAction.setProperty( "action", action )
+        #    self.getControl( 1200 ).addItem( listAction )
 
     def onClick( self, controlId ):
-        #print "onClick controId = %d " % controlId
-        if (controlId == 1200):
-            print "onClick controId = %d " % controlId
-            label = self.getControl( controlId
-                                   ).getSelectedItem().getProperty('action')
-            print 'LABEL = %s ' % label
-            if label == 'Programmes':
-                epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
-                epgWIN.doModal()
-                del epgWIN
-            elif label == 'Programmation':
-                timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
-                timersWIN.doModal()
-                del timersWIN
+        print "onClick controId = %d " % controlId
+        if (controlId == 1001):
+            epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
+            epgWIN.doModal()
+        elif (controlId == 1002):
+            timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
+            timersWIN.doModal()
+            del timersWIN
+
+#        if (controlId == 1200):
+ #           print "onClick controId = %d " % controlId
+ #           label = self.getControl( controlId
+ #                                  ).getSelectedItem().getProperty('action')
+ #           print 'LABEL = %s ' % label
+ #           if label == 'Programmes':
+ #               epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
+ #               epgWIN.doModal()
+ #               del epgWIN
+ #           elif label == 'Programmation':
+ #               timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
+ #               timersWIN.doModal()
+ #              del timersWIN
 
         elif (controlId == QUIT):
             self.close()
 
-mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__, "Default")
+#mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__, "Default")
+mydisplay = VDRWindow( "script-Actors-ContextMenu.xml" , __cwd__, "Default")
 mydisplay.doModal()
 del mydisplay
