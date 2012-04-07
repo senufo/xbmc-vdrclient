@@ -40,7 +40,7 @@ from types import *
 #12</channel><update>0</update><eventid>56590</eventid><bstart>600</bstart><bstop>1800</bstop></epgsearch><pin-plugin><protected>no</protected></pin-plugin>
 
 #_pat = re.compile('((?P<index>\d+) )?(?P<id>\d+):(?P<channel>\d+):(?P<day>\d{0,2}|.{7}):(?P<start>\d+):(?P<stop>\d+):(?P<prio>\d+):(?P<lifetime>\d+):(?P<name>[^:]*):(?P<summary>.*)')
-_pat = re.compile('((?P<index>\d+))?(?P<id>\d+):(?P<channel>\d+):(?P<day>\d{4}-\d{2}-\d{2}|.{7}):(?P<start>\d+):(?P<stop>\d+):(?P<prio>\d+):(?P<lifetime>\d+):(?P<name>[^:]*):(?P<summary>.*)')
+_pat = re.compile('((?P<index>\d+) )?(?P<id>\d+):(?P<channel>\d+):(?P<day>\d{4}-\d{2}-\d{2}|.{7}):(?P<start>\d+):(?P<stop>\d+):(?P<prio>\d+):(?P<lifetime>\d+):(?P<name>[^:]*):(?P<summary>.*)')
 
 
 #####################################################################
