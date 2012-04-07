@@ -5,17 +5,12 @@ Control VDR with xbmc
 #Modules xbmc
 import xbmc, xbmcgui
 import xbmcaddon
-#vdr modules
-import svdrp
-import event
-import channel
-import timer
-
 #python modules
 import os, re
 import pickle
 import sys
 import time
+
 
 __author__     = "Senufo"
 __scriptid__   = "script.svdrpclient"
@@ -31,6 +26,13 @@ __profile__    = xbmc.translatePath( __addon__.getAddonInfo('profile') )
 __resource__   = xbmc.translatePath( os.path.join( __cwd__, 'resources',
                                                   'lib' ) )
 sys.path.append (__resource__)
+
+
+#vdr modules
+import svdrp
+import event
+import channel
+import timer
 
 DEBUG = True
 # VDR server
