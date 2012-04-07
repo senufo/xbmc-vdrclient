@@ -49,6 +49,16 @@ TIMERS_LIST      = 120
 QUIT            = 1004
 TIMERS          = 1006
 
+def decoupe(seconde):
+    """
+    Découpe les seconde en H,M,S
+    """
+    heure = seconde /3600
+    seconde %= 3600
+    minute = seconde/60
+    seconde%=60
+    return (heure,minute,seconde)
+
 class EPGWindow(xbmcgui.WindowXML):
     """
     Window for VDR commands
@@ -200,8 +210,13 @@ class TIMERSWindow(xbmcgui.WindowXML):
 
         for prog in timers:
             print "TIMERS => %s " % str(prog.name)
+            (heure,minute,sec) = decoupe(prog.start)
+            h_start = '%02d:%02d' % (heure,minute)
+            (heure,minute,sec) = decoupe(prog.stop)
+            h_stop = '%02d:%02d' % (heure,minute)
+
             listTimers = xbmcgui.ListItem(label=prog.name,
-                                          label2=str(prog.start))
+                                          label2='%s - %s' % (h_start,h_stop))
             listTimers.setProperty( "action", prog.name )
  
             self.getControl( TIMERS_LIST ).addItem( listTimers )
