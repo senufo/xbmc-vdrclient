@@ -51,7 +51,7 @@ TIMERS          = 1006
 
 def decoupe(seconde):
     """
-    Découpe les seconde en H,M,S
+    Découpe les secondes en H,M,S
     """
     heure = seconde /3600
     seconde %= 3600
@@ -153,7 +153,7 @@ class EPGWindow(xbmcgui.WindowXML):
                     listEPGItem.setProperty( "description", description )
                     listEPGItem.setProperty( "date", time.strftime('%A, %d/%m/%Y',time_start))
                     self.getControl( 120 ).addItem( listEPGItem )
-                    Titre, SousTitre, Description = ('','','')
+                    (ev.title, ev.subtitle, ev.desc ) = ('','','')
                 except:
                     pass
             up2 = int((up*100)/NbEPG)
