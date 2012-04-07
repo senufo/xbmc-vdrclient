@@ -1,329 +1,96 @@
-<window>
-  <defaultcontrol>1200</defaultcontrol>
-  <coordinates>
-    <system>1</system>
-    <posx>0</posx>
-    <posy>0</posy>
-  </coordinates>
-  <animation effect="fade" time="250">WindowOpen</animation>
-  <animation effect="fade" time="250">WindowClose</animation>
-  <controls>
-  <control type="group">
-      <posx>0</posx>
-      <posy>0</posy>
-      <control type="image">
-	<description>Cadre du fond</description>
-        <posx>10</posx>   <!-- position du cadre -->
-        <posy>10</posy>
-	<width>1260</width> <!-- Dimension du cadre -->
-        <height>700</height>
-        <texture border="40">default-panel.png</texture>
-	<aspectratio scalediffuse="false" align="center" aligny="top">stretch</aspectratio>
-      </control>
-      <control type="label" id="101">
-        <description>textarea : Nom Chaine</description>
-        <posx>120</posx>
-        <posy>620</posy>
-        <width>200</width>
-        <height>40</height>
-        <font>font18</font>
-        <textcolor>white</textcolor>
-        <aligny>center</aligny>
-        <align>right</align>
-        <label>CHAINE</label>
-      </control>
-     
-      <control type="label">
-        <description>textarea : Partie Update de Listitem (120), en bas</description>
-        <posx>30</posx>
-        <posy>620</posy>
-        <width>1050</width>
-        <height>40</height>
-        <font>font18</font>
-        <textcolor>white</textcolor>
-        <aligny>center</aligny>
-        <align>center</align>
-        <label>$INFO[Container(120).ListItem.Property(date)]</label>
-      </control>
-      
-      <control type="image">
-        <description>1ere ligne en haut</description>
-        <posx>300</posx>
-        <posy>15</posy>
-        <width>960</width>
-        <height>2</height>
-        <texture>GMseparator.png</texture>
-      </control>
-      <control type="image">
-        <description>ligne au dessus du bouton quitter</description>
-        <posx>20</posx>
-        <posy>610</posy>
-        <width>1250</width>
-        <height>2</height>
-        <texture>GMseparator.png</texture>
-      </control>
-      <control type="image">
-        <description>ligne au dessus du bouton quitter</description>
-        <posx>20</posx>
-        <posy>615</posy>
-        <width>1250</width>
-        <height>2</height>
-        <texture>GMseparator.png</texture>
-      </control>      
-      <control type="image">
-        <description>ligne au dessous du bouton quitter</description>
-        <posx>20</posx>
-        <posy>665</posy>
-        <width>1250</width>
-        <height>2</height>
-        <texture>GMseparator.png</texture>
-      </control> 
-      <control type="image">
-        <description>ligne au dessous du bouton quitter</description>
-        <posx>20</posx>
-        <posy>670</posy>
-        <width>1250</width>
-        <height>2</height>
-        <texture>GMseparator.png</texture>
-</control>
-<control type="button" id="1006">
-          <description>button control Timers</description>
-          <posx>900</posx>
-          <posy>625</posy>
-          <width>135</width>
-          <height>35</height>
-          <align>center</align>
-          <aligny>center</aligny>
-          <visible>true</visible>
-          <colordiffuse>FFFFFFFF</colordiffuse>
-          <label>$ADDON[script.svdrpclient 33603]</label>
-          <!-- <label>Play Video</label> -->
-          <font>font14</font>
-          <textcolor>FFFFFFFF</textcolor>
-          <disabledcolor>80FFFFFF</disabledcolor>
-          <onup>1200</onup>
-          <ondown>1200</ondown>
-          <onleft>120</onleft>
-          <onright>1004</onright>
-       </control>
-
-<!-- Bouton quitter -->
-       <control type="button" id="1004">
-          <description>button control quit</description>
-          <posx>1100</posx>
-          <posy>625</posy>
-          <width>135</width>
-          <height>35</height>
-          <align>center</align>
-          <aligny>center</aligny>
-          <visible>true</visible>
-          <colordiffuse>FFFFFFFF</colordiffuse>
-          <label>$ADDON[script.headlines 33604]</label>
-          <!-- <label>Quit</label> -->
-          <font>font14</font>
-          <textcolor>FFFFFFFF</textcolor>
-          <disabledcolor>80FFFFFF</disabledcolor>
-          <onup>1200</onup>
-          <ondown>1200</ondown>
-          <onleft>1006</onleft>
-          <onright>120</onright>
-       </control>
-
-       <!-- separation entre list et description epg -->
-       <control type="image">
-        <posx>300</posx>
-        <posy>330</posy>
-        <width>960</width>
-        <height>2</height>
-        <texture>GMseparator.png</texture>
-      </control>
- 
-       <!-- Texte du msg -->
-       <control type="textbox" id="102">
-        <description>textarea : (description)du programme</description>
-        <posx>300</posx>
-        <posy>350</posy>
-        <width>900</width>
-        <height>240</height>
-        <font>font18</font>
-        <textcolor>white</textcolor>
-	<!-- <aligny>center</aligny> -->
-        <align>left</align>
-	<autoscroll time="3000" delay="4000" repeat="5000">True</autoscroll>
-        <label>$INFO[Container(120).ListItem.Property(description)]</label>
-      </control>
-      
-
-      <!-- ** Required ** Do not change <id> or <type> -->
-      <!-- Liste des messages                          -->
-      <control type="list" id="120">
-        <description>Liste des flux rss</description>
-        <posx>300</posx>
-        <posy>26</posy>
-        <width>1040</width>
-	<height>300</height>
-	<onleft>1200</onleft>  <!-- définiton du controle -->
-        <onright>1004</onright>
-	<!-- <onup>1001</onup>
-	<ondown>1003</ondown> -->
-        <viewtype label="535">list</viewtype>
-        <pagecontrol>121</pagecontrol>
-        <scrolltime>200</scrolltime>
-	<itemlayout height="38"> <!-- Position des items dans la liste -->
-          <control type="image">
-            <posx>0</posx>
-            <posy>36</posy>
-            <width>940</width>
-            <height>2</height>
-            <texture border="10">default-list-nofocus.png</texture>
-          </control>
-          
-          <control type="label">
-            <posx>10</posx> <!-- position de l'element non selectionne -->
-            <posy>0</posy>
-            <width>815</width>
-            <height>38</height>
-            <font>font18</font>
-            <aligny>center</aligny>
-            <textcolor>white</textcolor>
-            <selectedcolor>green</selectedcolor>
-            <align>left</align>
-            <info>ListItem.Label</info>
-          </control>
-          
-          <!-- <control type="label">
-            <posx>500</posx> --> <!-- position de 2eme element non selectionne -->
-           <!--  <posy>0</posy>
-            <width>680</width>
-            <height>38</height>
-            <font>font18</font>
-            <aligny>center</aligny>
-            <textcolor>white</textcolor>
-            <selectedcolor>green</selectedcolor>
-            <align>left</align>
-            <info>ListItem.Label2</info>
-          </control> -->
-
-        </itemlayout>
-        <focusedlayout height="38">
-          <control type="image"> <!-- Image de item selectionne -->
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>920</width>
-            <height>38</height>
-            <texture border="10">default-list-focus.png</texture>
-            <visible>Control.HasFocus(120)</visible>
-          </control>
-          
-          <control type="label">
-            <posx>10</posx>
-            <posy>0</posy>
-            <width>1000</width>
-            <height>38</height>
-            <font>font19</font>
-            <aligny>center</aligny>
-            <textcolor>white</textcolor>
-            <selectedcolor>green</selectedcolor>
-            <align>left</align>
-            <info>ListItem.Label</info>
-          </control>
-          
-          <control type="label">
-            <posx>500</posx>
-            <posy>0</posy>
-            <width>680</width>
-            <height>38</height>
-            <font>font18</font>
-            <aligny>center</aligny>
-            <textcolor>white</textcolor>
-            <selectedcolor>green</selectedcolor>
-            <align>left</align>
-            <info>ListItem.Property(realname)</info>
-	  </control>
-
-        </focusedlayout>
-      </control>
-      <control type="group">
-        <posx>1240</posx>
-        <posy>26</posy>
-        <control type="scrollbar" id="121">
-          <description>scroll bar indicator for lists</description>
-          <posx>0</posx>
-          <posy>0</posy>
-          <width>12</width>
-          <height>300</height>
-          <texturesliderbackground border="6">default-scroll_back.png</texturesliderbackground>
-          <texturesliderbar border="6">default-scroll_mid.png</texturesliderbar>
-          <texturesliderbarfocus border="6">default-scroll_mid.png</texturesliderbarfocus>
-          <textureslidernib>-</textureslidernib>
-          <textureslidernibfocus>-</textureslidernibfocus>
-          <orientation>vertical</orientation>
-          <showonepage>false</showonepage>
-          <visible>Control.IsVisible(120)</visible>
-        </control>
-      </control>
-      <!-- Liste des serveurs de news -->
-      <control type="list" id="1200">
-        <description>Liste des serveurs de news</description>
-        <posx>20</posx>
-        <posy>20</posy>
-        <width>275</width>
-	<height>550</height>
-	<onleft>1004</onleft>  <!-- définiton du controle -->
-        <onright>120</onright> -->
-	<!-- <onup>1001</onup>
-	<ondown>1003</ondown> -->
-        <viewtype label="535">list</viewtype>
-        <pagecontrol>121</pagecontrol>
-        <scrolltime>200</scrolltime>
-	<itemlayout height="38"> <!-- Position des items dans la liste -->
-          <control type="image">
-            <posx>1</posx>
-            <posy>36</posy>
-            <width>275</width>
-            <height>2</height>
-            <texture border="10">default-list-nofocus.png</texture>
-          </control>
-          
-          <control type="label">
-            <posx>10</posx> <!-- position de l'element non selectionne -->
-            <posy>0</posy>
-            <width>275</width>
-            <height>38</height>
-            <font>font18</font>
-            <aligny>center</aligny>
-            <textcolor>white</textcolor>
-            <selectedcolor>green</selectedcolor>
-            <align>left</align>
-            <info>ListItem.Label</info>
-          </control>
-          
-        </itemlayout>
-        <focusedlayout height="38">
-          <control type="image"> <!-- Image de item selectionne -->
-            <posx>5</posx>
-            <posy>0</posy>
-            <width>270</width>
-            <height>38</height>
-            <texture border="10">default-list-focus.png</texture>
-            <visible>Control.HasFocus(1200)</visible>
-          </control>
-          
-          <control type="label" id="1201">
-            <posx>10</posx>
-            <posy>0</posy>
-            <width>400</width>
-            <height>38</height>
-            <font>font19</font>
-            <aligny>center</aligny>
-            <textcolor>white</textcolor>
-            <selectedcolor>green</selectedcolor>
-            <align>left</align>
-            <info>ListItem.Label</info>
-          </control>
-        </focusedlayout>
-      </control>
-
-    </control>
-  </controls>
+<window id="3001">
+	<defaultcontrol always="true">1001</defaultcontrol>
+	<animation effect="fade" time="250">WindowOpen</animation>
+	<animation effect="fade" time="250">WindowClose</animation>
+	<coordinates>
+		<system>1</system>
+		<posx>470</posx>
+		<posy>0</posy>
+	</coordinates>
+	<controls>
+		<control type="grouplist" id="1000">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>340</width>
+			<height>720</height>
+			<align>center</align>
+			<onleft>1000</onleft>
+			<onright>1000</onright>
+			<onup>1000</onup>
+			<ondown>1000</ondown>
+			<itemgap>0</itemgap>
+			<control type="group" id="1">
+				<width>340</width>
+				<height>30</height>
+				<control type="image">
+					<description>background top image</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>340</width>
+					<height>30</height>
+					<texture border="20,19,20,0">DialogContextTop.png</texture>
+				</control>
+				<control type="button" id="20">
+					<description>Close Window button</description>
+					<posx>260</posx>
+					<posy>5</posy>
+					<width>64</width>
+					<height>32</height>
+					<label>xxxxxxxxxxxxxxxxxxxxxxxx</label>
+					<font>-</font>
+					<onclick>PreviousMenu</onclick>
+					<texturefocus>DialogCloseButton-focus.png</texturefocus>
+					<texturenofocus>DialogCloseButton.png</texturenofocus>
+					<onleft>1001</onleft>
+					<onright>1001</onright>
+					<onup>1011</onup>
+					<ondown>1001</ondown>
+					<visible>system.getbool(input.enablemouse)</visible>
+				</control>
+			</control>
+			<control type="button" id="1001">
+				<width>340</width>
+				<height>40</height>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<align>center</align>
+				<textwidth>290</textwidth>
+				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<pulseonselect>no</pulseonselect>
+				<label>Programmes</label>
+			</control>
+			<control type="button" id="1002">
+				<width>340</width>
+				<height>40</height>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<align>center</align>
+				<textwidth>290</textwidth>
+				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<pulseonselect>no</pulseonselect>
+				<label>Programmation</label>
+			</control>
+			<control type="button" id="1003">
+				<width>340</width>
+				<height>40</height>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<align>center</align>
+				<textwidth>290</textwidth>
+				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<pulseonselect>no</pulseonselect>
+				<label>Enregistrements</label>
+			</control>
+			<control type="image" id="1998">
+				<description>background bottom image</description>
+				<posx>0</posx>
+				<width>340</width>
+				<height>25</height>
+				<texture border="20,0,19,20">DialogContextBottom.png</texture>
+			</control>
+		</control>
+	</controls>
 </window>

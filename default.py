@@ -270,7 +270,6 @@ class VDRWindow(xbmcgui.WindowXML):
         elif (controlId == QUIT):
             self.close()
 
-#mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__, "Default")
-mydisplay = VDRWindow( "script-Actors-ContextMenu.xml" , __cwd__, "Default")
+mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__, "Default")
 mydisplay.doModal()
 del mydisplay
