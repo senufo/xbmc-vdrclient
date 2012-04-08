@@ -199,7 +199,7 @@ class Timer:
                 self.channel = int(res.group('channel'))
                 d = res.group('day')
                 if len(d) == 7:
-                    self.day = None
+                    self.day = d
                     self.recurrence = parserecurrence(d)
                 else:
                     #self.day = int(d)

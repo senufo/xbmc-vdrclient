@@ -49,6 +49,8 @@ TIMERS_LIST      = 120
 QUIT            = 1004
 TIMERS          = 1006
 
+ch = False
+
 def decoupe(seconde):
     """
     Découpe les secondes en H,M,S
@@ -195,6 +197,14 @@ class TIMERSWindow(xbmcgui.WindowXML):
     def onInit( self ):
         actions = ['Programmes','Programmation','Enregistrements']
         if DEBUG == True: print "Init TIMERSWindow"
+        self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
+        self.vdrpclient.send_command('lstc')
+        self.channels = []
+        for num, flag, message in self.vdrpclient.read_response(): 
+            ch = channel.Channel(message)
+            self.channels.append(ch)
+        self.vdrpclient.close()
+
         timers = []
         client = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         client.send_command('lstt')
@@ -218,9 +228,15 @@ class TIMERSWindow(xbmcgui.WindowXML):
             h_start = '%02d:%02d' % (heure,minute)
             (heure,minute,sec) = decoupe(prog.stop)
             h_stop = '%02d:%02d' % (heure,minute)
+            for c_name in self.channels:
+                print "NO = -%s-, CH = -%s- " % (c_name.no,prog.channel)
+                if c_name.no == prog.channel:
+                    print "No = %s, c_name=>.name_tok = %s" % (c_name.no,c_name.name_tok)
+                    prog.channel = c_name.name_tok
 
-            listTimers = xbmcgui.ListItem(label=prog.name,
-                                          label2='%s - %s' % (h_start,h_stop))
+            listTimers = xbmcgui.ListItem(label='%s : %s | %s - %s' %
+                                          (prog.channel, prog.day, h_start,h_stop),
+                                          label2=prog.name)
             listTimers.setProperty( "action", prog.name )
  
             self.getControl( TIMERS_LIST ).addItem( listTimers )
