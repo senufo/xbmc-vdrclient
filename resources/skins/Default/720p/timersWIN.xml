@@ -139,18 +139,32 @@
       </control>
  
        <!-- Texte du msg -->
-       <control type="textbox" id="102">
+       <!--       <control type="textbox" id="102">
         <description>textarea : (description)du programme</description>
         <posx>300</posx>
         <posy>350</posy>
         <width>900</width>
-        <height>240</height>
+        <height>40</height>
         <font>font18</font>
-        <textcolor>white</textcolor>
+        <textcolor>white</textcolor> -->
 	<!-- <aligny>center</aligny> -->
-        <align>left</align>
-	<autoscroll time="3000" delay="4000" repeat="5000">True</autoscroll>
-        <label>$INFO[Container(120).ListItem.Property(description)]</label>
+        <!--        <align>left</align>
+        <autoscroll time="3000" delay="4000" repeat="5000">True</autoscroll> -->
+        <!-- <label>$INFO[Container(120).ListItem.Property(description)]</label> -->
+        <!--        <label>Label textbox id=102</label>
+       </control> -->
+       <!-- <control type="editcontrol" id="103"> -->
+       <control type="edit" id="103">
+        <description>My First edit control</description>
+        <posx>300</posx>
+        <posy>490</posy>
+        <width>250</width>
+        <height>80</height>
+        <visible>true</visible>
+        <aligny>center</aligny>
+        <label>Search</label>
+        <hinttext>Enter search string</hinttext>
+        <font>font14</font>
       </control>
       
 
