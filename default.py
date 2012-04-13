@@ -240,7 +240,10 @@ class TIMERSWindow(xbmcgui.WindowXML):
                                           label2=prog.name)
 
             listTimers.setProperty( "channel", str(prog.channel) )
-            listTimers.setProperty( "action", prog.name )
+            listTimers.setProperty( "start", h_start )
+            listTimers.setProperty( "stop", h_stop )
+            listTimers.setProperty( "day", str(prog.day) )
+            listTimers.setProperty( "active", str(prog.active))
  
             self.getControl( TIMERS_LIST ).addItem( listTimers )
 

@@ -154,7 +154,7 @@
         <!--        <label>Label textbox id=102</label>
        </control> -->
        <!-- <control type="editcontrol" id="103"> -->
-       <control type="edit" id="201">
+       <control type="button" id="201">
         <description>Actif</description>
         <posx>300</posx>
         <posy>350</posy>
@@ -162,11 +162,11 @@
         <height>40</height>
         <visible>true</visible>
         <aligny>center</aligny>
-        <label>Actif</label>
-        <hinttext>Enter search string</hinttext>
+        <label>$INFO[Container(120).ListItem.Property(active)]</label>
+        <hinttext>$INFO[Container(120).ListItem.Property(active)]</hinttext>
         <font>font14</font>
       </control>
-        <control type="edit" id="202">
+        <control type="button" id="202">
         <description>Chaine</description>
         <posx>300</posx>
         <posy>400</posy>
@@ -178,7 +178,7 @@
         <hinttext>$INFO[Container(120).ListItem.Property(channel)]</hinttext>
         <font>font14</font>
       </control>
-      <control type="edit" id="203">
+      <control type="button" id="203">
         <description>Jour</description>
         <posx>300</posx>
         <posy>450</posy>
@@ -186,11 +186,11 @@
         <height>40</height>
         <visible>true</visible>
         <aligny>center</aligny>
-        <label>Jour</label>
-        <hinttext>Nom de la chaine</hinttext>
+        <label>$INFO[Container(120).ListItem.Property(day)]</label>
+        <hinttext>$INFO[Container(120).ListItem.Property(day)]</hinttext>
         <font>font14</font>
       </control>
-      <control type="edit" id="204">
+      <control type="button" id="204">
         <description>Debut</description>
         <posx>300</posx>
         <posy>500</posy>
@@ -198,11 +198,11 @@
         <height>40</height>
         <visible>true</visible>
         <aligny>center</aligny>
-        <label>Début</label>
-        <hinttext>Nom de la chaine</hinttext>
+        <label>$INFO[Container(120).ListItem.Property(start)]</label>
+        <hinttext>$INFO[Container(120).ListItem.Property(start)]</hinttext>
         <font>font14</font>
       </control>
-      <control type="edit" id="205">
+      <control type="button" id="205">
         <description>Fin</description>
         <posx>300</posx>
         <posy>550</posy>
@@ -210,8 +210,8 @@
         <height>40</height>
         <visible>true</visible>
         <aligny>center</aligny>
-        <label>Fin</label>
-        <hinttext>Nom de la chaine</hinttext>
+        <label>$INFO[Container(120).ListItem.Property(stop)]</label>
+        <hinttext>$INFO[Container(120).ListItem.Property(stop)]</hinttext>
         <font>font14</font>
       </control>
    
