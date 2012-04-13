@@ -216,6 +216,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
             print 'start = %s, stop = %s'  % (ti.start, ti.stop)
             print 'recu = %s, prio = %s' % (ti.recurrence, ti.prio)
             print 'lt = %s, act= %s ' % (ti.lifetime, ti.active)
+            print 'day = %s' % ti.day
             print ti.vdr
             timers.append(ti)
         client.close()
@@ -242,10 +243,27 @@ class TIMERSWindow(xbmcgui.WindowXML):
             listTimers.setProperty( "channel", str(prog.channel) )
             listTimers.setProperty( "start", h_start )
             listTimers.setProperty( "stop", h_stop )
+            days = ['M','T','W','T','F','S','S']
+            if not prog.day:
+                i = 0
+                prog.day = ''
+                for x in prog.recurrence:
+                    if x:
+                        prog.day = str(prog.day) + days[i]
+                    else:
+                        prog.day = prog.day + '-'
+                    i += 1
             listTimers.setProperty( "day", str(prog.day) )
             listTimers.setProperty( "active", str(prog.active))
  
             self.getControl( TIMERS_LIST ).addItem( listTimers )
+
+    def onClick( self, controlId ):
+        print "onClick controId = %d " % controlId
+        if (controlId == 201):
+            print "ControID = 201"
+        elif (controlId == 202):
+            print "ControID = 202"
 
 
 class VDRWindow(xbmcgui.WindowXML):

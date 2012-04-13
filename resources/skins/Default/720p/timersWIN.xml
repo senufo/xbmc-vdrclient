@@ -154,7 +154,20 @@
         <!--        <label>Label textbox id=102</label>
        </control> -->
        <!-- <control type="editcontrol" id="103"> -->
-       <control type="button" id="201">
+      <control type="label" >
+        <description>Label ACTIF</description>
+        <posx>220</posx>
+        <posy>350</posy>
+        <width>200</width>
+        <height>40</height>
+        <font>font18</font>
+        <textcolor>white</textcolor>
+        <aligny>center</aligny>
+        <align>right</align>
+        <label>ACTIF : </label>
+      </control>
+ 
+      <control type="button" id="201">
         <description>Actif</description>
         <posx>300</posx>
         <posy>350</posy>
@@ -165,8 +178,20 @@
         <label>$INFO[Container(120).ListItem.Property(active)]</label>
         <hinttext>$INFO[Container(120).ListItem.Property(active)]</hinttext>
         <font>font14</font>
-      </control>
-        <control type="button" id="202">
+      </control> 
+      <control type="label" >
+        <description>Label CHAINE</description>
+        <posx>220</posx>
+        <posy>400</posy>
+        <width>200</width>
+        <height>40</height>
+        <font>font18</font>
+        <textcolor>white</textcolor>
+        <aligny>center</aligny>
+        <align>right</align>
+        <label>CHAINE : </label>
+     </control>
+     <control type="button" id="202">
         <description>Chaine</description>
         <posx>300</posx>
         <posy>400</posy>
@@ -177,6 +202,18 @@
         <label>$INFO[Container(120).ListItem.Property(channel)]</label>
         <hinttext>$INFO[Container(120).ListItem.Property(channel)]</hinttext>
         <font>font14</font>
+      </control>
+      <control type="label" >
+        <description>Label JOUR</description>
+        <posx>220</posx>
+        <posy>450</posy>
+        <width>200</width>
+        <height>40</height>
+        <font>font18</font>
+        <textcolor>white</textcolor>
+        <aligny>center</aligny>
+        <align>right</align>
+        <label>JOUR(S) : </label> 
       </control>
       <control type="button" id="203">
         <description>Jour</description>
@@ -190,7 +227,19 @@
         <hinttext>$INFO[Container(120).ListItem.Property(day)]</hinttext>
         <font>font14</font>
       </control>
-      <control type="button" id="204">
+      <control type="label" >
+        <description>Label DEBUT</description>
+        <posx>220</posx>
+        <posy>500</posy>
+        <width>200</width>
+        <height>40</height>
+        <font>font18</font>
+        <textcolor>white</textcolor>
+        <aligny>center</aligny>
+        <align>right</align>
+        <label>DEBUT : </label> 
+      </control>
+     <control type="button" id="204">
         <description>Debut</description>
         <posx>300</posx>
         <posy>500</posy>
@@ -201,6 +250,18 @@
         <label>$INFO[Container(120).ListItem.Property(start)]</label>
         <hinttext>$INFO[Container(120).ListItem.Property(start)]</hinttext>
         <font>font14</font>
+      </control>
+      <control type="label" >
+        <description>Label FIN</description>
+        <posx>220</posx>
+        <posy>550</posy>
+        <width>200</width>
+        <height>40</height>
+        <font>font18</font>
+        <textcolor>white</textcolor>
+        <aligny>center</aligny>
+        <align>right</align>
+        <label>FIN : </label> 
       </control>
       <control type="button" id="205">
         <description>Fin</description>

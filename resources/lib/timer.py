@@ -234,6 +234,7 @@ class Timer:
             day = strrecurrence(self.recurrence)
         else:
             day = str(self.day)
+        print "__str__(self)"
         return string.join(map(str, [self.active, self.channel, day, strtime(self.start), strtime(self.stop), self.prio, self.lifetime, self.name, self.summary]), ':')
 
 
