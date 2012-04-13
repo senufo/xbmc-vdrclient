@@ -174,8 +174,8 @@
         <height>40</height>
         <visible>true</visible>
         <aligny>center</aligny>
-        <label>Chaine</label>
-        <hinttext>Nom de la chaine</hinttext>
+        <label>$INFO[Container(120).ListItem.Property(channel)]</label>
+        <hinttext>$INFO[Container(120).ListItem.Property(channel)]</hinttext>
         <font>font14</font>
       </control>
       <control type="edit" id="203">

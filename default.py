@@ -229,14 +229,17 @@ class TIMERSWindow(xbmcgui.WindowXML):
             (heure,minute,sec) = decoupe(prog.stop)
             h_stop = '%02d:%02d' % (heure,minute)
             for c_name in self.channels:
-                print "NO = -%s-, CH = -%s- " % (c_name.no,prog.channel)
-                if c_name.no == prog.channel:
+                print "NO = -%d-, CH = -%d- " %  (int(c_name.no),int(prog.channel))
+                if int(c_name.no) == int(prog.channel):
                     print "No = %s, c_name=>.name_tok = %s" % (c_name.no,c_name.name_tok)
                     prog.channel = c_name.name_tok
+                    break
 
             listTimers = xbmcgui.ListItem(label='%s : %s | %s - %s' %
                                           (prog.channel, prog.day, h_start,h_stop),
                                           label2=prog.name)
+
+            listTimers.setProperty( "channel", str(prog.channel) )
             listTimers.setProperty( "action", prog.name )
  
             self.getControl( TIMERS_LIST ).addItem( listTimers )
