@@ -154,19 +154,67 @@
         <!--        <label>Label textbox id=102</label>
        </control> -->
        <!-- <control type="editcontrol" id="103"> -->
-       <control type="edit" id="103">
-        <description>My First edit control</description>
+       <control type="edit" id="201">
+        <description>Actif</description>
         <posx>300</posx>
-        <posy>490</posy>
+        <posy>350</posy>
         <width>250</width>
-        <height>80</height>
+        <height>40</height>
         <visible>true</visible>
         <aligny>center</aligny>
-        <label>Search</label>
+        <label>Actif</label>
         <hinttext>Enter search string</hinttext>
         <font>font14</font>
       </control>
-      
+        <control type="edit" id="202">
+        <description>Chaine</description>
+        <posx>300</posx>
+        <posy>400</posy>
+        <width>250</width>
+        <height>40</height>
+        <visible>true</visible>
+        <aligny>center</aligny>
+        <label>Chaine</label>
+        <hinttext>Nom de la chaine</hinttext>
+        <font>font14</font>
+      </control>
+      <control type="edit" id="203">
+        <description>Jour</description>
+        <posx>300</posx>
+        <posy>450</posy>
+        <width>250</width>
+        <height>40</height>
+        <visible>true</visible>
+        <aligny>center</aligny>
+        <label>Jour</label>
+        <hinttext>Nom de la chaine</hinttext>
+        <font>font14</font>
+      </control>
+      <control type="edit" id="204">
+        <description>Debut</description>
+        <posx>300</posx>
+        <posy>500</posy>
+        <width>250</width>
+        <height>40</height>
+        <visible>true</visible>
+        <aligny>center</aligny>
+        <label>Début</label>
+        <hinttext>Nom de la chaine</hinttext>
+        <font>font14</font>
+      </control>
+      <control type="edit" id="205">
+        <description>Fin</description>
+        <posx>300</posx>
+        <posy>550</posy>
+        <width>250</width>
+        <height>40</height>
+        <visible>true</visible>
+        <aligny>center</aligny>
+        <label>Fin</label>
+        <hinttext>Nom de la chaine</hinttext>
+        <font>font14</font>
+      </control>
+   
 
       <!-- ** Required ** Do not change <id> or <type> -->
       <!-- Liste des messages                          -->
