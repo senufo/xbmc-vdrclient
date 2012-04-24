@@ -48,6 +48,12 @@ DESC_BODY       = 102
 TIMERS_LIST      = 120
 QUIT            = 1004
 TIMERS          = 1006
+#ID des champs dans timersWIN.xml
+ACTIF       = 201
+CHAINE      = 202
+JOUR        = 203
+DEBUT       = 204
+FIN         = 205
 
 ch = False
 
@@ -58,8 +64,8 @@ def decoupe(seconde):
     heure = seconde /3600
     seconde %= 3600
     minute = seconde/60
-    seconde%=60
-    return (heure,minute,seconde)
+    seconde %= 60
+    return (heure, minute, seconde)
 
 class EPGWindow(xbmcgui.WindowXML):
     """
@@ -91,6 +97,9 @@ class EPGWindow(xbmcgui.WindowXML):
             self.getControl( 1200 ).addItem( listChannel )
 
     def getEPG(self, ch):
+        """
+        Recupere l'EPG sur VDR
+        """
         #print 'CH EPG = %s ' % ch
         Dialog = xbmcgui.DialogProgress()
         locstr = __addon__.getLocalizedString(id=600) #Get EPG data
@@ -104,11 +113,11 @@ class EPGWindow(xbmcgui.WindowXML):
         for c_name in self.channels:
             #print "CHinit = %s " % ch
             if c_name.name_tok == ch:
-                print "No = %s, c_name.name_tok = %s" % (c_name.no,c_name.name_tok)
+                print "No = %s, c_name.name_tok = %s" % (c_name.no, c_name.name_tok)
                 c_no = c_name.no
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lste %s' % c_no)
-        Titre, SousTitre, Description = ('','','')
+        Titre, SousTitre, Description = ('', '', '')
         ev = event.Event()
         #nbEPG = len(self.vdrpclient.read_response())
         NbEPG = 500
@@ -117,7 +126,7 @@ class EPGWindow(xbmcgui.WindowXML):
             if message[0] == 'T':
                 ev.title = message[2:]
             elif message[0] == 'S':
-                ev.subtitle= message[2:]
+                ev.subtitle = message[2:]
             elif message[0] == 'D':
                 Description  = message[2:]
                 ev.desc = Description.replace('|','\n')
@@ -125,7 +134,7 @@ class EPGWindow(xbmcgui.WindowXML):
                 # event start
                 ev.parseheader(message[2:])
                 ev.source = 'vdr'
-                print "Start = %s, durée = %s, id = %s" % (ev.start,ev.dur,ev.id)
+                print "Start = %s, durée = %s, id = %s" % (ev.start, ev.dur, ev.id)
                 #START = Wed Apr 11 01:10:00 2012
                 #time.struct_time(tm_year=2012, tm_mon=4, tm_mday=10, tm_hour=23, tm_min=10, tm_sec=0, tm_wday=1, tm_yday=101, tm_isdst=0) 
                 print 'getitme = %s ' % time.gmtime(int(ev.start))
@@ -144,7 +153,7 @@ class EPGWindow(xbmcgui.WindowXML):
                     time_start = time.gmtime(int(time_start))
                     #stop = ev.start + ev.dur
                     time_stop = time.gmtime(int(stop))
-                    print "Start = %s, durée = %s, id = %s" % (ev.start,ev.dur,ev.id)
+                    print "Start = %s, durée = %s, id = %s" % (ev.start, ev.dur, ev.id)
                     print ('%02d:%02d - %02d:%02d => %s' %
                         (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
                         ev.title))
@@ -158,10 +167,10 @@ class EPGWindow(xbmcgui.WindowXML):
                     listEPGItem.setProperty( "description", description )
                     listEPGItem.setProperty( "date", time.strftime('%A, %d/%m/%Y',time_start))
                     self.getControl( 120 ).addItem( listEPGItem )
-                    (ev.title, ev.subtitle, ev.desc ) = ('','','')
+                    (ev.title, ev.subtitle, ev.desc ) = ('', '', '')
                 except:
                     print "Unexpected error:", sys.exc_info()[0] 
-                    pass
+                    #pass
             up2 = int((up*100)/NbEPG)
             #print "UP = %d " % up
             up += 1
@@ -173,6 +182,9 @@ class EPGWindow(xbmcgui.WindowXML):
         self.getControl( CHAINE ).setLabel( '%s' % ch )
  
     def onClick( self, controlId ):
+        """
+        Action lorsque on clique sur un bouton
+        """
         #print "onClick controId = %d " % controlId
         if (controlId == 1200):
             label = self.getControl( controlId
@@ -195,7 +207,10 @@ class TIMERSWindow(xbmcgui.WindowXML):
         if DEBUG == True: print "__INIT__"
 
     def onInit( self ):
-        actions = ['Programmes','Programmation','Enregistrements']
+        """
+        Initialisation de la classe TIMERSWindow
+        """
+        actions = ['Programmes', 'Programmation', 'Enregistrements']
         if DEBUG == True: print "Init TIMERSWindow"
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lstc')
@@ -204,12 +219,15 @@ class TIMERSWindow(xbmcgui.WindowXML):
             ch = channel.Channel(message)
             self.channels.append(ch)
         self.vdrpclient.close()
-
+        
+        #Tableau qui va contenir tout les timers
         timers = []
         client = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
+        #Envoi le cmd pour lister les timers
         client.send_command('lstt')
         for num, flag, message in client.read_response():
             print message
+            #Stocke les infos dans la classe Timer
             ti = timer.Timer(message)
             print "index = %s, name = %s " % (ti.index, ti.name)
             print 'summary = %s, channel = %s ' % (ti.summary, ti.channel)
@@ -222,28 +240,25 @@ class TIMERSWindow(xbmcgui.WindowXML):
         client.close()
 
         self.getControl( TIMERS_LIST ).reset()
-
+        #On parcours les timers
+        #pour les mettre dans la listbox
         for prog in timers:
             print "TIMERS => %s " % str(prog.name)
-            (heure,minute,sec) = decoupe(prog.start)
-            h_start = '%02d:%02d' % (heure,minute)
-            (heure,minute,sec) = decoupe(prog.stop)
-            h_stop = '%02d:%02d' % (heure,minute)
+            (heure, minute, sec) = decoupe(prog.start)
+            h_start = '%02d:%02d' % (heure, minute)
+            (heure, minute, sec) = decoupe(prog.stop)
+            h_stop = '%02d:%02d' % (heure, minute)
+            #On recupere le nom de la chaine en fct de son numéro
             for c_name in self.channels:
-                print "NO = -%d-, CH = -%d- " %  (int(c_name.no),int(prog.channel))
+                print "NO = -%d-, CH = -%d- " %  (int(c_name.no), int(prog.channel))
                 if int(c_name.no) == int(prog.channel):
-                    print "No = %s, c_name=>.name_tok = %s" % (c_name.no,c_name.name_tok)
+                    print "No = %s, c_name=>.name_tok = %s" % (c_name.no, c_name.name_tok)
                     prog.channel = c_name.name_tok
                     break
-
-            listTimers = xbmcgui.ListItem(label='%s : %s | %s - %s' %
-                                          (prog.channel, prog.day, h_start,h_stop),
-                                          label2=prog.name)
-
-            listTimers.setProperty( "channel", str(prog.channel) )
-            listTimers.setProperty( "start", h_start )
-            listTimers.setProperty( "stop", h_stop )
-            days = ['M','T','W','T','F','S','S']
+            #Dans VDR il y a deux manière de stocker le jour
+            #2012-04-24
+            #MTWFSS pour les programmations récurrentes
+            days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
             if not prog.day:
                 i = 0
                 prog.day = ''
@@ -253,17 +268,49 @@ class TIMERSWindow(xbmcgui.WindowXML):
                     else:
                         prog.day = prog.day + '-'
                     i += 1
+            #On ajoute les timers dans la listbox
+            listTimers = xbmcgui.ListItem(label='%s : %s | %s - %s' %
+                                          (prog.channel, prog.day, h_start,h_stop),
+                                          label2=prog.name)
+            #On rempli les différents champs du skin
+            listTimers.setProperty( "channel", str(prog.channel) )
+            listTimers.setProperty( "start", h_start )
+            listTimers.setProperty( "stop", h_stop )
             listTimers.setProperty( "day", str(prog.day) )
             listTimers.setProperty( "active", str(prog.active))
  
             self.getControl( TIMERS_LIST ).addItem( listTimers )
 
     def onClick( self, controlId ):
+        """
+        actions lorsque on clique sur un bouton du skin
+        """
         print "onClick controId = %d " % controlId
-        if (controlId == 201):
-            print "ControID = 201"
-        elif (controlId == 202):
-            print "ControID = 202"
+        if (controlId == ACTIF):
+            print "ControID = ACTIF"
+        elif (controlId == CHAINE):
+            print "ControID = CHAINE"
+            text = self.getControl( CHAINE ).getLabel()
+            print '==> text = %s ' % text
+            kb = xbmc.Keyboard('default', 'heading', True)
+            kb.setHeading('Entrer le nom de la chaîne') # optional
+            kb.setDefault(text) # optional
+            kb.setHiddenInput(False)
+            kb.doModal()
+            if (kb.isConfirmed()):
+                text = kb.getText()
+                self.getControl( CHAINE ).setLabel(text)
+        elif (controlId == JOUR):
+            print "ControID = JOUR"
+        elif (controlId == DEBUT):
+            print "ControID = DEBUT"
+        elif (controlId == FIN):
+            print "ControID = FIN"
+        elif (controlId == QUIT):
+            print "ControID = QUIT"
+            self.close()
+
+
 
 
 class VDRWindow(xbmcgui.WindowXML):
