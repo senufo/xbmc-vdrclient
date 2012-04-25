@@ -43,9 +43,9 @@ VDR_PORT = 2001
 
 #ID des boutons dans .xml
 STATUS_LABEL    = 100
-CHAINE          = 101
+CHAINE_EPG      = 101
 DESC_BODY       = 102
-TIMERS_LIST      = 120
+TIMERS_LIST     = 120
 QUIT            = 1004
 TIMERS          = 1006
 #ID des champs dans timersWIN.xml
@@ -179,13 +179,13 @@ class EPGWindow(xbmcgui.WindowXML):
         Dialog.close()       
 
         self.vdrpclient.close()
-        self.getControl( CHAINE ).setLabel( '%s' % ch )
+        self.getControl( CHAINE_EPG ).setLabel( '%s' % ch )
  
     def onClick( self, controlId ):
         """
         Action lorsque on clique sur un bouton
         """
-        #print "onClick controId = %d " % controlId
+        print "onClick controId = %d " % controlId
         if (controlId == 1200):
             label = self.getControl( controlId
                                    ).getSelectedItem().getProperty('serveur')
