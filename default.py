@@ -171,7 +171,7 @@ class EPGWindow(xbmcgui.WindowXML):
                     #  status:channel:day    :start:stop:priority:lifetime:filename:
                     #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
                     listEPGItem.setProperty( "channel", ch)
-                    listEPGItem.setProperty( "day", ch)
+                    listEPGItem.setProperty( "day", time.strftime('%Y-%m-%d',time_start))
                     listEPGItem.setProperty( "start", '%02d%02d' %
                                             (time_start.tm_hour,time_start.tm_min))
                     listEPGItem.setProperty( "stop", '%02d%02d' %
@@ -194,7 +194,32 @@ class EPGWindow(xbmcgui.WindowXML):
 
         self.vdrpclient.close()
         self.getControl( CHAINE_EPG ).setLabel( '%s' % ch )
- 
+
+    def writeTimer(self):
+        """
+        Ecrit un nouveau timer
+        """
+        epg_channel = self.getControl( EPG_LIST
+                                   ).getSelectedItem().getProperty('channel')
+        epg_day = self.getControl( EPG_LIST
+                                  ).getSelectedItem().getProperty('day')
+        epg_start = self.getControl( EPG_LIST 
+                                     ).getSelectedItem().getProperty('start')
+        epg_stop = self.getControl( EPG_LIST 
+                                     ).getSelectedItem().getProperty('stop')
+        epg_priority = self.getControl( EPG_LIST 
+                                     ).getSelectedItem().getProperty('priority')
+        epg_lifetime = self.getControl( EPG_LIST 
+                                     ).getSelectedItem().getProperty('lifetime')
+        epg_filename = self.getControl( EPG_LIST 
+                                     ).getSelectedItem().getProperty('filename')
+
+        print """
+        EPG ch = %s, day = %s, start = %s , stop = %s, prio = %s , lt =
+        %s, filename = %s
+        """ % (epg_channel, epg_day, epg_start, epg_stop, epg_priority,
+               epg_lifetime, epg_filename)
+
     def onClick( self, controlId ):
         """
         Action lorsque on clique sur un bouton
@@ -205,18 +230,7 @@ class EPGWindow(xbmcgui.WindowXML):
                                    ).getSelectedItem().getProperty('serveur')
             self.getEPG(label)
         elif (controlId == EPG_LIST):
-            epg_timer = self.getControl( controlId
-                                       ).getSelectedItem().getProperty('description')
-            epg_date = self.getControl( controlId
-                                       ).getSelectedItem().getProperty('date')
-            epg_channel = self.getControl( controlId 
-                                          ).getSelectedItem().getProperty('channel')
-
-
-
-            print "EPG Timer = %s, date = %s, chaine = %s " % (epg_timer,
-                                                               epg_date,
-                                                               epg_channel)
+            self.writeTimer()
         elif (controlId == TIMERS):
             label = self.getControl( FEEDS_LIST
                                    ).getSelectedItem().getProperty('description')
