@@ -45,7 +45,8 @@ VDR_PORT = 2001
 STATUS_LABEL    = 100
 CHAINE_EPG      = 101
 DESC_BODY       = 102
-TIMERS_LIST     = 120
+EPG_LIST     = 120
+CHANNELS_LIST   = 1200
 QUIT            = 1004
 TIMERS          = 1006
 #ID des champs dans timersWIN.xml
@@ -94,7 +95,7 @@ class EPGWindow(xbmcgui.WindowXML):
             listChannel.setProperty( "video" , 'video' )
  
             listChannel.setProperty("serveur", ch.name_tok )
-            self.getControl( 1200 ).addItem( listChannel )
+            self.getControl( CHANNELS_LIST ).addItem( listChannel )
 
     def getEPG(self, ch):
         """
@@ -166,6 +167,19 @@ class EPGWindow(xbmcgui.WindowXML):
                     description = '%s\n====\n%s\n====\n%s' % (ev.title, ev.subtitle, ev.desc )
                     listEPGItem.setProperty( "description", description )
                     listEPGItem.setProperty( "date", time.strftime('%A, %d/%m/%Y',time_start))
+                    #Properties pour les timers
+                    #  status:channel:day    :start:stop:priority:lifetime:filename:
+                    #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
+                    listEPGItem.setProperty( "channel", ch)
+                    listEPGItem.setProperty( "day", ch)
+                    listEPGItem.setProperty( "start", '%02d%02d' %
+                                            (time_start.tm_hour,time_start.tm_min))
+                    listEPGItem.setProperty( "stop", '%02d%02d' %
+                                            (time_stop.tm_hour,time_stop.tm_min))
+                    listEPGItem.setProperty( "priority", '50')
+                    listEPGItem.setProperty( "lifetime", '30')
+                    listEPGItem.setProperty( "filename", ev.title)
+
                     self.getControl( 120 ).addItem( listEPGItem )
                     (ev.title, ev.subtitle, ev.desc ) = ('', '', '')
                 except:
@@ -186,10 +200,23 @@ class EPGWindow(xbmcgui.WindowXML):
         Action lorsque on clique sur un bouton
         """
         print "onClick controId = %d " % controlId
-        if (controlId == 1200):
+        if (controlId == CHANNELS_LIST):
             label = self.getControl( controlId
                                    ).getSelectedItem().getProperty('serveur')
             self.getEPG(label)
+        elif (controlId == EPG_LIST):
+            epg_timer = self.getControl( controlId
+                                       ).getSelectedItem().getProperty('description')
+            epg_date = self.getControl( controlId
+                                       ).getSelectedItem().getProperty('date')
+            epg_channel = self.getControl( controlId 
+                                          ).getSelectedItem().getProperty('channel')
+
+
+
+            print "EPG Timer = %s, date = %s, chaine = %s " % (epg_timer,
+                                                               epg_date,
+                                                               epg_channel)
         elif (controlId == TIMERS):
             label = self.getControl( FEEDS_LIST
                                    ).getSelectedItem().getProperty('description')
@@ -239,7 +266,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
             timers.append(ti)
         client.close()
 
-        self.getControl( TIMERS_LIST ).reset()
+        self.getControl( EPG_LIST ).reset()
         #On parcours les timers
         #pour les mettre dans la listbox
         for prog in timers:
@@ -279,7 +306,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
             listTimers.setProperty( "day", str(prog.day) )
             listTimers.setProperty( "active", str(prog.active))
  
-            self.getControl( TIMERS_LIST ).addItem( listTimers )
+            self.getControl( EPG_LIST ).addItem( listTimers )
 
     def onClick( self, controlId ):
         """

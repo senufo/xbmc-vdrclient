@@ -262,9 +262,9 @@
           <visible>Control.IsVisible(120)</visible>
         </control>
       </control>
-      <!-- Liste des serveurs de news -->
+      <!-- Liste des des chaines -->
       <control type="list" id="1200">
-        <description>Liste des serveurs de news</description>
+        <description>Liste des chaines</description>
         <posx>20</posx>
         <posy>20</posy>
         <width>275</width>
