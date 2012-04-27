@@ -6,8 +6,7 @@ Control VDR with xbmc
 import xbmc, xbmcgui
 import xbmcaddon
 #python modules
-import os, re
-import pickle
+import os
 import sys
 import time
 
@@ -74,7 +73,8 @@ class EPGWindow(xbmcgui.WindowXML):
     """
    
     def __init__(self, *args, **kwargs):
-        if DEBUG == True: print "__INIT__"
+        if DEBUG == True: 
+            print "__INIT__"
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lstc')
         self.channels = []
@@ -86,7 +86,11 @@ class EPGWindow(xbmcgui.WindowXML):
 #            print "CHinit = %s " % ch
         
     def onInit( self ):
-        if DEBUG == True: print "Branch Master"
+        """
+        Init Class EPGWIndow
+        """
+        if DEBUG == True: 
+            print "Branch Master"
         for ch in self.channels:
             listChannel = xbmcgui.ListItem(label=ch.name_tok)
             listChannel.setProperty( "description", 'desc' )
@@ -166,12 +170,12 @@ class EPGWindow(xbmcgui.WindowXML):
                     listEPGItem = xbmcgui.ListItem( label=epg_data)
                     description = '%s\n====\n%s\n====\n%s' % (ev.title, ev.subtitle, ev.desc )
                     listEPGItem.setProperty( "description", description )
-                    listEPGItem.setProperty( "date", time.strftime('%A, %d/%m/%Y',time_start))
+                    listEPGItem.setProperty( "date", time.strftime('%A, %d/%m/%Y', time_start))
                     #Properties pour les timers
                     #  status:channel:day    :start:stop:priority:lifetime:filename:
                     #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
                     listEPGItem.setProperty( "channel", ch)
-                    listEPGItem.setProperty( "day", time.strftime('%Y-%m-%d',time_start))
+                    listEPGItem.setProperty( "day", time.strftime('%Y-%m-%d', time_start))
                     listEPGItem.setProperty( "start", '%02d%02d' %
                                             (time_start.tm_hour,time_start.tm_min))
                     listEPGItem.setProperty( "stop", '%02d%02d' %
@@ -219,6 +223,8 @@ class EPGWindow(xbmcgui.WindowXML):
         %s, filename = %s
         """ % (epg_channel, epg_day, epg_start, epg_stop, epg_priority,
                epg_lifetime, epg_filename)
+        write_timerWIN = TIMERSWindow( "write_timerWIN.xml" , __cwd__, "Default")
+        write_timerWIN.doModal()
 
     def onClick( self, controlId ):
         """
@@ -360,11 +366,13 @@ class VDRWindow(xbmcgui.WindowXML):
     """
    
     def __init__(self, *args, **kwargs):
-        if DEBUG == True: print "__INIT__"
+        if DEBUG == True: 
+            print "__INIT__"
 
     def onInit( self ):
         actions = ['Programmes','Programmation','Enregistrements']
-        if DEBUG == True: print "Init VDRWindow"
+        if DEBUG == True: 
+            print "Init VDRWindow"
         #self.getControl( 1200 ).reset()
         #for action in actions:
         #    listAction = xbmcgui.ListItem(label=action)
@@ -372,6 +380,9 @@ class VDRWindow(xbmcgui.WindowXML):
         #    self.getControl( 1200 ).addItem( listAction )
 
     def onClick( self, controlId ):
+        """
+        Actions when mouse click on control
+        """
         print "onClick controId = %d " % controlId
         if (controlId == 1001):
             epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
