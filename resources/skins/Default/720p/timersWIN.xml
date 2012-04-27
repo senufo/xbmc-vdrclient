@@ -1,3 +1,19 @@
+<!--
++==============+=========================================+
+|id=1200       |Timer list (id = 120)                    |
+|no used       |                                         |
++==============+=========================================+
+| Actif        | textarea id=201                         |
+| CHAINE       | textarea id=202                         |
+| JUOR(s)      | textarea id=203                         |
+| DEBUT        | textarea id=204                         |
+| FIN          | textarea id=205                         |
++==============+=========================================+
+|CHAINE id=101 |                    Prog  Quitter id=1004|
++==============+=========================================+
+
+
+-->
 <window>
   <defaultcontrol>1200</defaultcontrol>
   <coordinates>
