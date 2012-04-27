@@ -53,7 +53,12 @@ client = SVDRPClient(VDR_HOST, VDR_PORT)
 #num, message = client.confirm_shutdown()
 #client.send_command('chan')
 #client.send_command('help')
-client.send_command('lstc')
+#client.send_command('lstc')
+cmd_svdrp = '1:37:2012-04-27:1730:1745:50:30:C Ã  dire:'
+client.send_command('NEWT %s' % cmd_svdrp)
+client.close()
+exit()
+
 #num = 0
 #message = client.read_line()
 #print num, message

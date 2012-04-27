@@ -118,7 +118,7 @@ class EPGWindow(xbmcgui.WindowXML):
         for c_name in self.channels:
             #print "CHinit = %s " % ch
             if c_name.name_tok == ch:
-                print "No = %s, c_name.name_tok = %s" % (c_name.no, c_name.name_tok)
+                #print "No = %s, c_name.name_tok = %s" % (c_name.no, c_name.name_tok)
                 c_no = c_name.no
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lste %s' % c_no)
@@ -127,7 +127,7 @@ class EPGWindow(xbmcgui.WindowXML):
         #nbEPG = len(self.vdrpclient.read_response())
         NbEPG = 500
         for num, flag, message in self.vdrpclient.read_response():
-            print "MESSAGE = %s " % message
+            #print "MESSAGE = %s " % message
             if message[0] == 'T':
                 ev.title = message[2:]
             elif message[0] == 'S':
@@ -139,13 +139,13 @@ class EPGWindow(xbmcgui.WindowXML):
                 # event start
                 ev.parseheader(message[2:])
                 ev.source = 'vdr'
-                print "Start = %s, durée = %s, id = %s" % (ev.start, ev.dur, ev.id)
+                #print "Start = %s, durée = %s, id = %s" % (ev.start, ev.dur, ev.id)
                 #START = Wed Apr 11 01:10:00 2012
                 #time.struct_time(tm_year=2012, tm_mon=4, tm_mday=10, tm_hour=23, tm_min=10, tm_sec=0, tm_wday=1, tm_yday=101, tm_isdst=0) 
-                print 'getitme = %s ' % time.gmtime(int(ev.start))
-            print "Mxx[0] = %s " % message[0]
+                #print 'getitme = %s ' % time.gmtime(int(ev.start))
+            #print "Mxx[0] = %s " % message[0]
             if message[0] == 'e':
-                print 'Messge = %s' % message
+                #print 'Messge = %s' % message
                 try:
                 #if 1:
                     #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
@@ -158,10 +158,10 @@ class EPGWindow(xbmcgui.WindowXML):
                     time_start = time.gmtime(int(time_start))
                     #stop = ev.start + ev.dur
                     time_stop = time.gmtime(int(stop))
-                    print "Start = %s, durée = %s, id = %s" % (ev.start, ev.dur, ev.id)
-                    print ('%02d:%02d - %02d:%02d => %s' %
-                        (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
-                        ev.title))
+                    #print "Start = %s, durée = %s, id = %s" % (ev.start, ev.dur, ev.id)
+                    #print ('%02d:%02d - %02d:%02d => %s' %
+                    #    (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
+                    #    ev.title))
 
                     epg_data = ('%02d:%02d - %02d:%02d : %s' %
                         (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min,
@@ -175,6 +175,7 @@ class EPGWindow(xbmcgui.WindowXML):
                     #  status:channel:day    :start:stop:priority:lifetime:filename:
                     #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
                     listEPGItem.setProperty( "channel", ch)
+                    listEPGItem.setProperty( "no_ch", c_no)
                     listEPGItem.setProperty( "day", time.strftime('%Y-%m-%d', time_start))
                     listEPGItem.setProperty( "start", '%02d%02d' %
                                             (time_start.tm_hour,time_start.tm_min))
@@ -199,12 +200,14 @@ class EPGWindow(xbmcgui.WindowXML):
         self.vdrpclient.close()
         self.getControl( CHAINE_EPG ).setLabel( '%s' % ch )
 
-    def writeTimer(self):
+    def selectTimer(self):
         """
         Ecrit un nouveau timer
         """
         epg_channel = self.getControl( EPG_LIST
                                    ).getSelectedItem().getProperty('channel')
+        epg_no_ch = self.getControl( EPG_LIST
+                                    ).getSelectedItem().getProperty('no_ch')
         epg_day = self.getControl( EPG_LIST
                                   ).getSelectedItem().getProperty('day')
         epg_start = self.getControl( EPG_LIST 
@@ -223,7 +226,22 @@ class EPGWindow(xbmcgui.WindowXML):
         %s, filename = %s
         """ % (epg_channel, epg_day, epg_start, epg_stop, epg_priority,
                epg_lifetime, epg_filename)
-        write_timerWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
+        #Stocke les infos dans la classe Timer
+        ti = timer.Timer()
+        ti.index = 0
+        ti.name = epg_filename
+        ti.summary = ''
+        ti.channel = epg_no_ch
+        ti.start = epg_start
+        ti.stop = epg_stop
+        ti.recurrence = ''
+        ti.prio = epg_priority
+        ti.lifetime = epg_lifetime
+        ti.active = ''
+        ti.day = epg_day
+        #On passe les valeurs du timer
+        write_timerWIN = TIMERSWindow( "timersWIN.xml" , __cwd__,
+                                      "Default",writetimer=True, timer=ti)
         write_timerWIN.doModal()
 
     def onClick( self, controlId ):
@@ -236,7 +254,7 @@ class EPGWindow(xbmcgui.WindowXML):
                                    ).getSelectedItem().getProperty('serveur')
             self.getEPG(label)
         elif (controlId == EPG_LIST):
-            self.writeTimer()
+            self.selectTimer()
         elif (controlId == TIMERS):
             label = self.getControl( FEEDS_LIST
                                    ).getSelectedItem().getProperty('description')
@@ -251,14 +269,55 @@ class TIMERSWindow(xbmcgui.WindowXML):
     """
    
     def __init__(self, *args, **kwargs):
-        if DEBUG == True: print "__INIT__"
+        if DEBUG == True: 
+            print "__INIT__ TIMERSWindow"
+            #writetimer = True si on ecrit un timer
+            self.write = kwargs.get('writetimer')
+            self.myTimer = kwargs.get('timer')
+            print "ARGS = " + repr(args) + " - " + repr(kwargs)
+            print "WriteTimer = %s " % self.write
 
     def onInit( self ):
         """
         Initialisation de la classe TIMERSWindow
         """
         actions = ['Programmes', 'Programmation', 'Enregistrements']
-        if DEBUG == True: print "Init TIMERSWindow"
+        if DEBUG == True: 
+            print "Init TIMERSWindow"
+        #writetimer = True on écrit un timer sinon on liste ceux qui existent
+        if self.write:
+            self.writeTimer()
+        else:
+            self.listTimers()
+    
+    def writeTimer(self):
+        print "TIMER = %s " % self.myTimer.channel
+        #Properties pour les timers
+        #  status:channel:day    :start:stop:priority:lifetime:filename:
+        #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
+        print "1:%s:%s:%s:%s:%s:%s:%s:" % (self.myTimer.channel,
+                                           self.myTimer.day,
+                                           self.myTimer.start,
+                                           self.myTimer.stop,
+                                           self.myTimer.prio,
+                                           self.myTimer.lifetime,
+                                           self.myTimer.name)
+        cmd_svdrp = "1:%s:%s:%s:%s:%s:%s:%s:" % (self.myTimer.channel,
+                                           self.myTimer.day,
+                                           self.myTimer.start,
+                                           self.myTimer.stop,
+                                           self.myTimer.prio,
+                                           self.myTimer.lifetime,
+                                           self.myTimer.name)
+
+        vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
+        vdrpclient.send_command(cmd_svdrp)
+        vdrpclient.close()
+ 
+    def listTimers(self):
+        """
+        Liste les timers de VDR et les affiche
+        """
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lstc')
         self.channels = []
