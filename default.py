@@ -223,7 +223,7 @@ class EPGWindow(xbmcgui.WindowXML):
         %s, filename = %s
         """ % (epg_channel, epg_day, epg_start, epg_stop, epg_priority,
                epg_lifetime, epg_filename)
-        write_timerWIN = TIMERSWindow( "write_timerWIN.xml" , __cwd__, "Default")
+        write_timerWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
         write_timerWIN.doModal()
 
     def onClick( self, controlId ):

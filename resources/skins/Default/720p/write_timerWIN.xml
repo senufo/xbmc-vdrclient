@@ -2,7 +2,7 @@
   <defaultcontrol>1200</defaultcontrol>
   <!--
 +==========================+====+
-|Actif                     |    |
+|Actif                     |id=101    |
 |Chaine                    |    |
 |Jour d'enregistrement     |    |
 |Heure de début            |    |
@@ -44,5 +44,18 @@
         <align>right</align>
         <label>Actif :</label>
       </control>
+      <control type="list" id="120">
+        <description>en attente</description>
+        <posx>20</posx>
+        <posy>200</posy>
+        <width>200</width>
+        <height>40</height>
+        <font>font18</font>
+        <textcolor>white</textcolor>
+        <aligny>center</aligny>
+        <align>right</align>
+        <label>En attente</label>
+      </control>
+
   </controls>
 </window>
