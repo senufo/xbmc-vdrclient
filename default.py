@@ -295,13 +295,6 @@ class TIMERSWindow(xbmcgui.WindowXML):
         #Properties pour les timers
         #  status:channel:day    :start:stop:priority:lifetime:filename:
         #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
-        print "1:%s:%s:%s:%s:%s:%s:%s:" % (self.myTimer.channel,
-                                           self.myTimer.day,
-                                           self.myTimer.start,
-                                           self.myTimer.stop,
-                                           self.myTimer.prio,
-                                           self.myTimer.lifetime,
-                                           self.myTimer.name)
         cmd_svdrp = "1:%s:%s:%s:%s:%s:%s:%s:" % (self.myTimer.channel,
                                            self.myTimer.day,
                                            self.myTimer.start,
@@ -309,9 +302,9 @@ class TIMERSWindow(xbmcgui.WindowXML):
                                            self.myTimer.prio,
                                            self.myTimer.lifetime,
                                            self.myTimer.name)
-
+        print "cmd_svdrp = %s " % cmd_svdrp
         vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
-        vdrpclient.send_command(cmd_svdrp)
+        vdrpclient.send_command('newt %s' % cmd_svdrp)
         vdrpclient.close()
  
     def listTimers(self):
