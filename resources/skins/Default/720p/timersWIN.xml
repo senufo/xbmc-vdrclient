@@ -39,9 +39,9 @@
       <control type="image">
         <description>1ere ligne en haut</description>
         <posx>300</posx>
-        <posy>15</posy>
+        <posy>55</posy>
         <width>960</width>
-        <height>2</height>
+        <height>20</height>
         <texture>GMseparator.png</texture>
       </control>
       <!-- separation entre list et description timer -->
@@ -327,7 +327,7 @@
       <control type="list" id="120">
         <description>Liste des timers</description>
         <posx>300</posx>
-        <posy>26</posy>
+        <posy>70</posy>
         <width>1040</width>
 	<height>300</height>
 	<onleft>2001</onleft>  <!-- définiton du controle -->
