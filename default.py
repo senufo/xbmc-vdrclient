@@ -397,6 +397,16 @@ class TIMERSWindow(xbmcgui.WindowXML):
  
             self.getControl( EPG_LIST ).addItem( listTimers )
 
+    def onFocus( self, controlId ):
+        """
+        actions lorsque on clique sur un bouton du skin
+        """
+        print "onFocus controId = %d " % controlId
+
+    def onAction(self, action):
+        print "ID Action %d" % action.getId()
+        print "Code Action %d" % action.getButtonCode()
+            
     def onClick( self, controlId ):
         """
         actions lorsque on clique sur un bouton du skin
