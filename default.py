@@ -385,10 +385,14 @@ class TIMERSWindow(xbmcgui.WindowXML):
                         prog.day = prog.day + '-'
                     i += 1
             #On ajoute les timers dans la listbox
-            listTimers = xbmcgui.ListItem(label='%s : %s | %s - %s' %
-                                          (prog.channel, prog.day, h_start,h_stop),
+            #listTimers = xbmcgui.ListItem(label='%2s| %10s | %10s | %5s - %5s' %
+            #                              (str(prog.active),prog.channel, 
+            #                               prog.day, h_start,h_stop),
+            #                              label2=prog.name)
+            listTimers = xbmcgui.ListItem(label='%10s' %
+                                          prog.channel, 
                                           label2=prog.name)
-            #On rempli les différents champs du skin
+           #On rempli les différents champs du skin
             listTimers.setProperty( "channel", str(prog.channel) )
             listTimers.setProperty( "start", h_start )
             listTimers.setProperty( "stop", h_stop )
@@ -397,15 +401,15 @@ class TIMERSWindow(xbmcgui.WindowXML):
  
             self.getControl( EPG_LIST ).addItem( listTimers )
 
-    def onFocus( self, controlId ):
-        """
-        actions lorsque on clique sur un bouton du skin
-        """
-        print "onFocus controId = %d " % controlId
+    #def onFocus( self, controlId ):
+    #    """
+    #    actions lorsque on clique sur un bouton du skin
+    #    """
+    #    print "onFocus controId = %d " % controlId
 
-    def onAction(self, action):
-        print "ID Action %d" % action.getId()
-        print "Code Action %d" % action.getButtonCode()
+    #def onAction(self, action):
+    #    print "ID Action %d" % action.getId()
+    #    print "Code Action %d" % action.getButtonCode()
             
     def onClick( self, controlId ):
         """
@@ -470,6 +474,11 @@ class VDRWindow(xbmcgui.WindowXML):
             timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
             timersWIN.doModal()
             del timersWIN
+        #elif (controlId == 1003):
+        #    timersWIN = xbmcgui.WindowXML( "fixed.xml" , __cwd__, "Default")
+            #timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
+        #    timersWIN.doModal()
+        #    del timersWIN
 
 #        if (controlId == 1200):
  #           print "onClick controId = %d " % controlId
