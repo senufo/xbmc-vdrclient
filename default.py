@@ -54,6 +54,13 @@ CHAINE      = 202
 JOUR        = 203
 DEBUT       = 204
 FIN         = 205
+#ID des champs dans EditimerWIN.xml
+PRIORITY    = 206
+LIFETIME    = 207
+CHILDLOCK   = 208
+TITLE       = 209
+CANCEL      = 2001
+ECRIRE      = 2002
 
 ch = False
 
@@ -284,8 +291,30 @@ class EDITimerWindow(xbmcgui.WindowXML):
         if DEBUG == True:
             print 'INIT EDITimerWindow'
         if self.write:
-            self.writeTimer()
+            self.displayTimer()
+
+    def displayTimer(self): 
+        """
+        Display timer info before write in VDR
+        """
+        #On ajoute le timer dans la listbox
+        listTimers = xbmcgui.ListItem(label='%s : %s | %s - %s' %
+                                      (self.myTimer.channel, self.myTimer.day,
+                                       self.myTimer.start, self.myTimer.stop),
+                                      label2=self.myTimer.name)
+        #On rempli les différents champs du skin
+        listTimers.setProperty( "channel", str(self.myTimer.channel) )
+        listTimers.setProperty( "start", self.myTimer.start )
+        listTimers.setProperty( "stop", self.myTimer.stop )
+        listTimers.setProperty( "day", self.myTimer.day )
+        listTimers.setProperty( "active", '1')
+        listTimers.setProperty( "priority", self.myTimer.prio)
+        listTimers.setProperty( "lifetime", self.myTimer.lifetime)
+        listTimers.setProperty( "childlock", self.myTimer.name)
+        listTimers.setProperty( "title", self.myTimer.name)
  
+        self.getControl( EPG_LIST ).addItem( listTimers )
+
     def writeTimer(self):
         """
         Ecrit le timer
@@ -306,20 +335,40 @@ class EDITimerWindow(xbmcgui.WindowXML):
         vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         vdrpclient.send_command('newt %s' % cmd_svdrp)
         vdrpclient.close()
-        #On ajoute les timers dans la listbox
-        listTimers = xbmcgui.ListItem(label='%s : %s | %s - %s' %
-                                      (self.myTimer.channel, self.myTimer.day,
-                                       self.myTimer.start, self.myTimer.stop),
-                                      label2=self.myTimer.name)
-        #On rempli les différents champs du skin
-        listTimers.setProperty( "channel", str(self.myTimer.channel) )
-        listTimers.setProperty( "start", self.myTimer.start )
-        listTimers.setProperty( "stop", self.myTimer.stop )
-        listTimers.setProperty( "day", self.myTimer.day )
-        listTimers.setProperty( "active", '1')
-        listTimers.setProperty( "title", self.myTimer.name)
- 
-        self.getControl( EPG_LIST ).addItem( listTimers )
+
+    def onClick( self, controlId ):
+        """
+        actions lorsque on clique sur un bouton du skin EditimerWin
+        """
+        print "onClick Editimer = %d " % controlId
+        if (controlId == CANCEL):
+            self.close()
+        elif (controlId == ECRIRE):
+            self.writeTimer()
+            self.close()
+        elif (controlId == ACTIF):
+            print "ControID = ACTIF"
+        elif (controlId == CHAINE):
+            print "ControID = CHAINE"
+            text = self.getControl( CHAINE ).getLabel()
+            print '==> text = %s ' % text
+            kb = xbmc.Keyboard('default', 'heading', True)
+            kb.setHeading('Entrer le nom de la chaîne') # optional
+            kb.setDefault(text) # optional
+            kb.setHiddenInput(False)
+            kb.doModal()
+            if (kb.isConfirmed()):
+                text = kb.getText()
+                self.getControl( CHAINE ).setLabel(text)
+        elif (controlId == JOUR):
+            print "ControID = JOUR"
+        elif (controlId == DEBUT):
+            print "ControID = DEBUT"
+        elif (controlId == FIN):
+            print "ControID = FIN"
+        elif (controlId == QUIT):
+            print "ControID = QUIT"
+            self.close()
 
 class TIMERSWindow(xbmcgui.WindowXML):
     """
