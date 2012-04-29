@@ -471,8 +471,12 @@ class TIMERSWindow(xbmcgui.WindowXML):
             #                              (str(prog.active),prog.channel, 
             #                               prog.day, h_start,h_stop),
             #                              label2=prog.name)
-            listTimers = xbmcgui.ListItem(label='%10s' %
-                                          prog.channel, 
+            if prog.active == 1:
+                on = '*'
+            else:
+                on = ' '
+            listTimers = xbmcgui.ListItem(label='%2s %10s' %
+                                          (on, prog.channel), 
                                           label2=prog.name)
            #On rempli les différents champs du skin
             listTimers.setProperty( "channel", str(prog.channel) )
