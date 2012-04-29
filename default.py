@@ -491,7 +491,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
         print "Delete TIMER"
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('delt %s' % index)
-        self.close() 
+        self.vdrpclient.close() 
 
     #def onFocus( self, controlId ):
     #    """
@@ -521,6 +521,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
             print "ret = %s " % ret
             if ret == 1:
                 self.delTimer(timer_index)
+                self.listTimers()
         elif (controlId == ACTIF):
             print "ControID = ACTIF"
         elif (controlId == CHAINE):
