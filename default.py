@@ -451,6 +451,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
                 if int(c_name.no) == int(prog.channel):
                     print "No = %s, c_name=>.name_tok = %s" % (c_name.no, c_name.name_tok)
                     prog.channel = c_name.name_tok
+                    prog.no_ch = c_name.no
                     break
             #Dans VDR il y a deux manière de stocker le jour
             #2012-04-24
@@ -475,12 +476,15 @@ class TIMERSWindow(xbmcgui.WindowXML):
                                           label2=prog.name)
            #On rempli les différents champs du skin
             listTimers.setProperty( "channel", str(prog.channel) )
+            listTimers.setProperty( "no_ch", str(prog.no_ch) )
             listTimers.setProperty( "start", h_start )
             listTimers.setProperty( "stop", h_stop )
             listTimers.setProperty( "day", str(prog.day) )
             listTimers.setProperty( "active", str(prog.active))
             listTimers.setProperty( "index", str(prog.index))
             listTimers.setProperty( "filename", str(prog.name))
+            listTimers.setProperty( "priority", str(prog.prio))
+            listTimers.setProperty( "lifetime", str(prog.lifetime))
  
             self.getControl( EPG_LIST ).addItem( listTimers )
 
@@ -491,6 +495,45 @@ class TIMERSWindow(xbmcgui.WindowXML):
         print "Delete TIMER"
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('delt %s' % index)
+        self.vdrpclient.close() 
+
+    def activateTimer(self, activate):
+        """
+        ON/OFF timer in VDR
+        """
+        print "ACTIVATE TIMER"
+        #Properties pour les timers
+        #  status:channel:day    :start:stop:priority:lifetime:filename:
+        #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
+        channel = self.getControl( EPG_LIST
+                                 ).getSelectedItem().getProperty('channel')
+        no_channel = self.getControl( EPG_LIST
+                                 ).getSelectedItem().getProperty('no_ch')
+        start = self.getControl( EPG_LIST
+                                 ).getSelectedItem().getProperty('start')
+        start = start.replace(':','')
+        stop = self.getControl( EPG_LIST
+                                 ).getSelectedItem().getProperty('stop')
+        stop = stop.replace(':','')
+        day = self.getControl( EPG_LIST
+                                 ).getSelectedItem().getProperty('day')
+        filename = self.getControl( EPG_LIST
+                                 ).getSelectedItem().getProperty('filename')
+        priority = self.getControl( EPG_LIST
+                                 ).getSelectedItem().getProperty('priority')
+        lifetime = self.getControl( EPG_LIST
+                                 ).getSelectedItem().getProperty('lifetime')
+ 
+        cmd_svdrp = "%s:%s:%s:%s:%s:%s:%s:%s:" % (activate, no_channel,
+                                           day,
+                                           start,
+                                           stop,
+                                           priority,
+                                           lifetime,
+                                           filename)
+        print "CMD_VDR_ UP = %s " % cmd_svdrp
+        self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
+        self.vdrpclient.send_command('updt %s' % cmd_svdrp)
         self.vdrpclient.close() 
 
     #def onFocus( self, controlId ):
@@ -522,6 +565,25 @@ class TIMERSWindow(xbmcgui.WindowXML):
             if ret == 1:
                 self.delTimer(timer_index)
                 self.listTimers()
+        #Toggle ON/OFF timer
+        elif (controlId == ON):
+            timer_actif = self.getControl( EPG_LIST
+                                         ).getSelectedItem().getProperty('active')
+            timer_name = self.getControl( EPG_LIST
+                                   ).getSelectedItem().getProperty('filename')
+            if timer_actif == '0':
+                cmd_activate = 'activate'
+                timer_actif = 1
+            else:
+                cmd_activate = 'de-activate'
+                timer_actif = 0
+            dialog = xbmcgui.Dialog()
+            ret = dialog.yesno('Activate', 'Do you want %s this timer : %s ?' %
+                               (cmd_activate, timer_name))
+            if ret == 1:
+                self.activateTimer(timer_actif)
+                self.listTimers()
+ 
         elif (controlId == ACTIF):
             print "ControID = ACTIF"
         elif (controlId == CHAINE):
