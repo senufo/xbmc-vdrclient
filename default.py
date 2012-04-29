@@ -236,7 +236,8 @@ class EPGWindow(xbmcgui.WindowXML):
         ti.day = epg_day
         #On passe les valeurs du timer a la classe editimer
         write_timerWIN = EDITimerWindow( "editimersWIN.xml" , __cwd__,
-                                      "Default",writetimer=True, timer=ti)
+                                      "Default",writetimer=True, timer=ti,
+                                        channel_name=epg_channel)
         write_timerWIN.doModal()
 
     def onClick( self, controlId ):
@@ -271,6 +272,7 @@ class EDITimerWindow(xbmcgui.WindowXML):
             #writetimer = True si on ecrit un timer
             self.write = kwargs.get('writetimer')
             self.myTimer = kwargs.get('timer')
+            self.channel_name = kwargs.get('channel_name')
             print "ARGS = " + repr(args) + " - " + repr(kwargs)
             print "WriteTimer = %s " % self.write
   
@@ -289,7 +291,7 @@ class EDITimerWindow(xbmcgui.WindowXML):
         """
         #On ajoute le timer dans la listbox
         listTimers = xbmcgui.ListItem(label='%s' %
-                                      self.myTimer.channel, 
+                                      self.channel_name,   #Utilise le nom de la chaine plutot que son numéro
                                       label2=self.myTimer.name)
         #On rempli les différents champs du skin
         listTimers.setProperty( "channel", str(self.myTimer.channel) )
@@ -299,7 +301,7 @@ class EDITimerWindow(xbmcgui.WindowXML):
         listTimers.setProperty( "active", '1')
         listTimers.setProperty( "priority", self.myTimer.prio)
         listTimers.setProperty( "lifetime", self.myTimer.lifetime)
-        listTimers.setProperty( "childlock", self.myTimer.name)
+        listTimers.setProperty( "childlock", 'no used')
         listTimers.setProperty( "title", self.myTimer.name)
  
         self.getControl( EPG_LIST ).addItem( listTimers )
@@ -377,7 +379,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
         """
         Initialisation de la classe TIMERSWindow
         """
-        actions = ['Programmes', 'Programmation', 'Enregistrements']
+        #actions = ['Programmes', 'Programmation', 'Enregistrements']
         if DEBUG == True: 
             print "Init TIMERSWindow"
         #writetimer = True on écrit un timer sinon on liste ceux qui existent
@@ -434,7 +436,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
                     prog.channel = c_name.name_tok
                     prog.no_ch = c_name.no
                     break
-            #Dans VDR il y a deux manière de stocker le jour
+            #Dans VDR il y a deux manières de stocker le jour
             #2012-04-24
             #MTWFSS pour les programmations récurrentes
             days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
@@ -448,10 +450,6 @@ class TIMERSWindow(xbmcgui.WindowXML):
                         prog.day = prog.day + '-'
                     i += 1
             #On ajoute les timers dans la listbox
-            #listTimers = xbmcgui.ListItem(label='%2s| %10s | %10s | %5s - %5s' %
-            #                              (str(prog.active),prog.channel, 
-            #                               prog.day, h_start,h_stop),
-            #                              label2=prog.name)
             if prog.active == 1:
                 on = '*'
             else:
@@ -516,21 +514,10 @@ class TIMERSWindow(xbmcgui.WindowXML):
                                            priority,
                                            lifetime,
                                            filename)
-        print "CMD_VDR_ UP = %s " % cmd_svdrp
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('updt %s' % cmd_svdrp)
         self.vdrpclient.close() 
 
-    #def onFocus( self, controlId ):
-    #    """
-    #    actions lorsque on clique sur un bouton du skin
-    #    """
-    #    print "onFocus controId = %d " % controlId
-
-    #def onAction(self, action):
-    #    print "ID Action %d" % action.getId()
-    #    print "Code Action %d" % action.getButtonCode()
-            
     def onClick( self, controlId ):
         """
         actions lorsque on clique sur un bouton du skin
@@ -543,8 +530,10 @@ class TIMERSWindow(xbmcgui.WindowXML):
                                    ).getSelectedItem().getProperty('index')
             timer_name = self.getControl( EPG_LIST
                                    ).getSelectedItem().getProperty('filename')
+            locstr = __addon__.getLocalizedString(id=603) #Delete
+            locstr2 = __addon__.getLocalizedString(id=604) #Do you want del timer No
 
-            ret = dialog.yesno('Delete', 'Do you want del timer No %s, %s ?' %
+            ret = dialog.yesno(locstr, locstr2 %
                                (timer_index, timer_name))
             print "ret = %s " % ret
             if ret == 1:
@@ -557,13 +546,15 @@ class TIMERSWindow(xbmcgui.WindowXML):
             timer_name = self.getControl( EPG_LIST
                                    ).getSelectedItem().getProperty('filename')
             if timer_actif == '0':
-                cmd_activate = 'activate'
+                cmd_activate = __addon__.getLocalizedString(id=607) #'activate'
                 timer_actif = 1
             else:
-                cmd_activate = 'de-activate'
+                cmd_activate = __addon__.getLocalizedString(id=608) #'de-activate'
                 timer_actif = 0
             dialog = xbmcgui.Dialog()
-            ret = dialog.yesno('Activate', 'Do you want %s this timer : %s ?' %
+            locstr = __addon__.getLocalizedString(id=605) #Activate
+            locstr2 = __addon__.getLocalizedString(id=606) #Do you want %s this timer : %s ?
+            ret = dialog.yesno(locstr, locstr2 %
                                (cmd_activate, timer_name))
             if ret == 1:
                 self.activateTimer(timer_actif)
@@ -609,11 +600,6 @@ class VDRWindow(xbmcgui.WindowXML):
         actions = ['Programmes','Programmation','Enregistrements']
         if DEBUG == True: 
             print "Init VDRWindow"
-        #self.getControl( 1200 ).reset()
-        #for action in actions:
-        #    listAction = xbmcgui.ListItem(label=action)
-        #    listAction.setProperty( "action", action )
-        #    self.getControl( 1200 ).addItem( listAction )
 
     def onClick( self, controlId ):
         """

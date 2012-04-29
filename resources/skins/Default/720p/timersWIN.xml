@@ -95,7 +95,7 @@
           <aligny>center</aligny>
           <visible>true</visible>
           <colordiffuse>FFFFFFFF</colordiffuse>
-          <label>Programmation</label> -->
+          <label>$ADDON[script.svdrpclient 33603]</label> 
           <font>font30</font>
           <textcolor>yellow</textcolor>
   </control>
@@ -203,8 +203,7 @@
           <aligny>center</aligny>
           <visible>true</visible>
           <colordiffuse>FFFFFFFF</colordiffuse>
-          <!-- <label>$ADDON[script.svdrpclient 33603]</label> -->
-          <label>ON/OFF</label> -->
+          <label>$ADDON[script.svdrpclient 33605]</label>
           <font>font14</font>
           <textcolor>FFFFFFFF</textcolor>
           <disabledcolor>80FFFFFF</disabledcolor>
@@ -223,8 +222,7 @@
           <aligny>center</aligny>
           <visible>true</visible>
           <colordiffuse>FFFFFFFF</colordiffuse>
-          <!-- <label>$ADDON[script.svdrpclient 33603]</label> -->
-          <label>Nouveau</label> -->
+          <label>$ADDON[script.svdrpclient 33606]</label>
           <font>font14</font>
           <textcolor>FFFFFFFF</textcolor>
           <disabledcolor>80FFFFFF</disabledcolor>
@@ -243,7 +241,7 @@
           <textcolor>white</textcolor>
           <aligny>center</aligny>
           <align>center</align>
-          <label>Suprimer</label>
+          <label>$ADDON[script.svdrpclient 33607]</label>
           <onup>120</onup>
           <ondown>120</ondown>
           <onleft>2002</onleft>
@@ -259,7 +257,7 @@
           <textcolor>white</textcolor>
           <aligny>center</aligny>
           <align>center</align>
-          <label>Infos</label>
+          <label>$ADDON[script.svdrpclient 33608]</label>
           <onup>120</onup>
           <ondown>120</ondown>
           <onleft>2003</onleft>
@@ -278,7 +276,7 @@
           <aligny>center</aligny>
           <visible>true</visible>
           <colordiffuse>FFFFFFFF</colordiffuse>
-          <!-- <label>$ADDON[script.headlines 33604]</label> -->
+          <label>$ADDON[script.svdrpclient 33609]</label>
           <label>Quit</label>
           <font>font14</font>
           <textcolor>FFFFFFFF</textcolor>
@@ -301,7 +299,7 @@
         <textcolor>white</textcolor>
         <aligny>center</aligny>
         <align>right</align>
-        <label>ACTIF : </label>
+        <label>$ADDON[script.svdrpclient 33610]</label>
       </control>
  
       <control type="button" id="201">
@@ -326,7 +324,7 @@
         <textcolor>white</textcolor>
         <aligny>center</aligny>
         <align>right</align>
-        <label>CHAINE : </label>
+        <label>$ADDON[script.svdrpclient 33611]</label>
      </control>
      <control type="button" id="202">
         <description>Chaine</description>
@@ -350,7 +348,7 @@
         <textcolor>white</textcolor>
         <aligny>center</aligny>
         <align>right</align>
-        <label>JOUR(S) : </label> 
+        <label>$ADDON[script.svdrpclient 33612]</label>
       </control>
       <control type="button" id="203">
         <description>Jour</description>
@@ -374,7 +372,7 @@
         <textcolor>white</textcolor>
         <aligny>center</aligny>
         <align>right</align>
-        <label>DEBUT : </label> 
+        <label>$ADDON[script.svdrpclient 33613]</label>
       </control>
      <control type="button" id="204">
         <description>Debut</description>
@@ -398,7 +396,7 @@
         <textcolor>white</textcolor>
         <aligny>center</aligny>
         <align>right</align>
-        <label>FIN : </label> 
+        <label>$ADDON[script.svdrpclient 33614]</label>
       </control>
       <control type="button" id="205">
         <description>Fin</description>

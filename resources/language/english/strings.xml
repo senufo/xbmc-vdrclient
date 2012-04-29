@@ -3,6 +3,22 @@
     <string id="600">Get EPG data</string>
     <string id="601">Please wait...</string>
     <string id="602">news</string>
+    <string id="603">Delete timer</string>
+    <string id="604">Do you want delete timer No %s[CR] %s ?</string>
+    <string id="605">Activate timer</string>
+    <string id="606">Do you want %s this timer :[CR] %s ?</string>
+    <string id="607">activate</string>
+    <string id="608">de-activate</string>
     <string id="33603">Timers</string>
     <string id="33604">Quit</string>
+    <string id="33605">ON/OFF</string>
+    <string id="33606">NEW</string>
+    <string id="33607">DELETE</string>
+    <string id="33608">INFOS</string>
+    <string id="33609">QUIT</string>
+    <string id="33610">ACTIVE</string>
+    <string id="33611">CHANNEL</string>
+    <string id="33612">DAY</string>
+    <string id="33613">START</string>
+    <string id="33614">STOP</string>
 </strings>

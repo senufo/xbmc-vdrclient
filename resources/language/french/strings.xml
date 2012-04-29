@@ -3,6 +3,22 @@
     <string id="600">Télécharge les programmes</string>
     <string id="601">Attendez SVP...</string>
     <string id="602">news</string>
+    <string id="603">Effacer la programmation</string>
+    <string id="604">Voulez-vous effacer la programmation No %s[CR] %s ?</string>
+    <string id="605">Activer la programmation</string>
+    <string id="606">Voulez-vous %s la programmation :[CR] %s ?</string>
+    <string id="607">activer</string>
+    <string id="608">dé-activer</string>
     <string id="33603">Programmation</string>
     <string id="33604">Quitter</string>
+    <string id="33605">Actif (O/N)</string>
+    <string id="33606">Nouveau</string>
+    <string id="33607">Supprimer</string>
+    <string id="33608">INFOS</string>
+    <string id="33609">QUITTER</string>
+    <string id="33610">ACTIF</string>
+    <string id="33611">CHAÎNE</string>
+    <string id="33612">JOUR</string>
+    <string id="33613">DEBUT</string>
+    <string id="33614">FIN</string>
 </strings>
