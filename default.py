@@ -240,7 +240,7 @@ class EPGWindow(xbmcgui.WindowXML):
         ti.active = ''
         ti.day = epg_day
         #On passe les valeurs du timer
-        write_timerWIN = TIMERSWindow( "timersWIN.xml" , __cwd__,
+        write_timerWIN = EDITimerWindow( "timersWIN.xml" , __cwd__,
                                       "Default",writetimer=True, timer=ti)
         write_timerWIN.doModal()
 
@@ -262,6 +262,63 @@ class EPGWindow(xbmcgui.WindowXML):
 
         elif (controlId == QUIT):
             self.close()
+
+class EDITimerWindow(xbmcgui.WindowXML):
+    """
+    Window for EDITimer window
+    """
+ 
+    def __init__(self, *args, **kwargs):
+        if DEBUG == True: 
+            print "__INIT__ TIMERSWindow"
+            #writetimer = True si on ecrit un timer
+            self.write = kwargs.get('writetimer')
+            self.myTimer = kwargs.get('timer')
+            print "ARGS = " + repr(args) + " - " + repr(kwargs)
+            print "WriteTimer = %s " % self.write
+  
+    def onInit( self ):
+        """
+        Initialisation de la classe EDITIMERWindow
+        """
+        if DEBUG == True:
+            print 'INIT EDITimerWindow'
+        if self.write:
+            self.writeTimer()
+ 
+    def writeTimer(self):
+        """
+        Ecrit le timer
+        """
+        print "TIMER = %s " % self.myTimer.channel
+        #Properties pour les timers
+        #  status:channel:day    :start:stop:priority:lifetime:filename:
+        #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
+        cmd_svdrp = "1:%s:%s:%s:%s:%s:%s:%s:" % (self.myTimer.channel,
+                                           self.myTimer.day,
+                                           self.myTimer.start,
+                                           self.myTimer.stop,
+                                           self.myTimer.prio,
+                                           self.myTimer.lifetime,
+                                           self.myTimer.name)
+        print "cmd_svdrp = %s " % cmd_svdrp
+        #svdrp write timer command (newt)
+        vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
+        vdrpclient.send_command('newt %s' % cmd_svdrp)
+        vdrpclient.close()
+        #On ajoute les timers dans la listbox
+        listTimers = xbmcgui.ListItem(label='%s : %s | %s - %s' %
+                                      (self.myTimer.channel, self.myTimer.day,
+                                       self.myTimer.start, self.myTimer.stop),
+                                      label2=self.myTimer.name)
+        #On rempli les différents champs du skin
+        listTimers.setProperty( "channel", str(self.myTimer.channel) )
+        listTimers.setProperty( "start", self.myTimer.start )
+        listTimers.setProperty( "stop", self.myTimer.stop )
+        listTimers.setProperty( "day", self.myTimer.day )
+        listTimers.setProperty( "active", '1')
+ 
+        self.getControl( EPG_LIST ).addItem( listTimers )
 
 class TIMERSWindow(xbmcgui.WindowXML):
     """
