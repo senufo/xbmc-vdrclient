@@ -44,7 +44,7 @@ VDR_PORT = 2001
 STATUS_LABEL    = 100
 CHAINE_EPG      = 101
 DESC_BODY       = 102
-EPG_LIST     = 120
+EPG_LIST        = 120
 CHANNELS_LIST   = 1200
 QUIT            = 1004
 TIMERS          = 1006
@@ -54,11 +54,19 @@ CHAINE      = 202
 JOUR        = 203
 DEBUT       = 204
 FIN         = 205
+#Boutons de timersWIN.xml
+ON          = 2001
+NEW         = 2002
+DEL         = 2003
+INFO        = 2004
+EDIT        = 2005
+
 #ID des champs dans EditimerWIN.xml
 PRIORITY    = 206
 LIFETIME    = 207
 CHILDLOCK   = 208
 TITLE       = 209
+#Boutons de editimerWIN.xml
 CANCEL      = 2001
 ECRIRE      = 2002
 
@@ -418,7 +426,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
             print message
             #Stocke les infos dans la classe Timer
             ti = timer.Timer(message)
-            print "index = %s, name = %s " % (ti.index, ti.name)
+            print "num = %s, index = %s, name = %s " % (num, ti.index, ti.name)
             print 'summary = %s, channel = %s ' % (ti.summary, ti.channel)
             print 'start = %s, stop = %s'  % (ti.start, ti.stop)
             print 'recu = %s, prio = %s' % (ti.recurrence, ti.prio)
@@ -471,8 +479,19 @@ class TIMERSWindow(xbmcgui.WindowXML):
             listTimers.setProperty( "stop", h_stop )
             listTimers.setProperty( "day", str(prog.day) )
             listTimers.setProperty( "active", str(prog.active))
+            listTimers.setProperty( "index", str(prog.index))
+            listTimers.setProperty( "filename", str(prog.name))
  
             self.getControl( EPG_LIST ).addItem( listTimers )
+
+    def delTimer(self, index):
+        """
+        Delete timer in VDR
+        """
+        print "Delete TIMER"
+        self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
+        self.vdrpclient.send_command('delt %s' % index)
+        self.close() 
 
     #def onFocus( self, controlId ):
     #    """
@@ -488,8 +507,21 @@ class TIMERSWindow(xbmcgui.WindowXML):
         """
         actions lorsque on clique sur un bouton du skin
         """
-        print "onClick controId = %d " % controlId
-        if (controlId == ACTIF):
+        print "onClick TIMERWIN = %d " % controlId
+        #delete timer
+        if ( controlId == DEL):
+            dialog = xbmcgui.Dialog()
+            timer_index = self.getControl( EPG_LIST
+                                   ).getSelectedItem().getProperty('index')
+            timer_name = self.getControl( EPG_LIST
+                                   ).getSelectedItem().getProperty('filename')
+
+            ret = dialog.yesno('Delete', 'Do you want del timer No %s, %s ?' %
+                               (timer_index, timer_name))
+            print "ret = %s " % ret
+            if ret == 1:
+                self.delTimer(timer_index)
+        elif (controlId == ACTIF):
             print "ControID = ACTIF"
         elif (controlId == CHAINE):
             print "ControID = CHAINE"
@@ -552,20 +584,6 @@ class VDRWindow(xbmcgui.WindowXML):
             #timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
         #    timersWIN.doModal()
         #    del timersWIN
-
-#        if (controlId == 1200):
- #           print "onClick controId = %d " % controlId
- #           label = self.getControl( controlId
- #                                  ).getSelectedItem().getProperty('action')
- #           print 'LABEL = %s ' % label
- #           if label == 'Programmes':
- #               epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
- #               epgWIN.doModal()
- #               del epgWIN
- #           elif label == 'Programmation':
- #               timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
- #               timersWIN.doModal()
- #              del timersWIN
 
         elif (controlId == QUIT):
             self.close()
