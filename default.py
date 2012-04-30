@@ -26,6 +26,17 @@ __resource__   = xbmc.translatePath( os.path.join( __cwd__, 'resources',
                                                   'lib' ) )
 sys.path.append (__resource__)
 
+DEBUG_LOG = __addon__.getSetting( 'debug' )
+if 'true' in DEBUG_LOG : DEBUG_LOG = True
+else: DEBUG_LOG = False
+#DEBUG_LOG = True
+
+#Function Debug
+def debug(msg):
+    """
+    print message if DEBUG_LOG == True
+    """
+    if DEBUG_LOG == True: print " [%s] : %s " % (__scriptname__, msg)
 
 #vdr modules
 import svdrp
@@ -33,7 +44,6 @@ import event
 import channel
 import timer
 
-DEBUG = True
 # VDR server
 VDR_HOST = __addon__.getSetting('host1')
 #VDR_HOST = '127.0.0.1'
@@ -91,8 +101,7 @@ class EPGWindow(xbmcgui.WindowXML):
     """
    
     def __init__(self, *args, **kwargs):
-        if DEBUG == True: 
-            print "__INIT__"
+        debug( "__INIT__")
         #Recupere la liste des chaines
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lstc')
@@ -106,8 +115,7 @@ class EPGWindow(xbmcgui.WindowXML):
         """
         Init Class EPGWIndow
         """
-        if DEBUG == True: 
-            print "Branch Master"
+        debug ( "Branch Master")
         for ch in self.channels:
             #Affiche le numero et le nom de la chaine
             listChannel = xbmcgui.ListItem(label=ch.no, label2=ch.name_tok)
@@ -157,7 +165,7 @@ class EPGWindow(xbmcgui.WindowXML):
                 ev.parseheader(message[2:])
                 ev.source = 'vdr'
             if message[0] == 'e':
-                #print 'Messge = %s' % message
+                #debug ( 'Messge = %s' % message)
                 try:
                 #if 1:
                     #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
@@ -251,7 +259,7 @@ class EPGWindow(xbmcgui.WindowXML):
         """
         Action lorsque on clique sur un bouton window timer
         """
-        print "onClick controId = %d " % controlId
+        debug ( "onClick controId = %d " % controlId)
         #Clic sur un nom de chaine
         if (controlId == CHANNELS_LIST):
             channel_name = self.getControl( controlId
@@ -276,21 +284,19 @@ class EDITimerWindow(xbmcgui.WindowXML):
     """
  
     def __init__(self, *args, **kwargs):
-        if DEBUG == True: 
-            print "__INIT__ EDITIMERWindow"
-            #writetimer = True si on ecrit un timer
-            self.write = kwargs.get('writetimer')
-            self.myTimer = kwargs.get('timer')
-            self.channel_name = kwargs.get('channel_name')
-            print "ARGS = " + repr(args) + " - " + repr(kwargs)
-            print "WriteTimer = %s " % self.write
+        debug ( "__INIT__ EDITIMERWindow")
+        #writetimer = True si on ecrit un timer
+        self.write = kwargs.get('writetimer')
+        self.myTimer = kwargs.get('timer')
+        self.channel_name = kwargs.get('channel_name')
+        debug ( "ARGS = " + repr(args) + " - " + repr(kwargs))
+        debug ( "WriteTimer = %s " % self.write)
   
     def onInit( self ):
         """
         Initialisation de la classe EDITIMERWindow
         """
-        if DEBUG == True:
-            print 'INIT EDITimerWindow'
+        debug ( 'INIT EDITimerWindow')
         if self.write:
             self.displayTimer()
 
@@ -319,7 +325,7 @@ class EDITimerWindow(xbmcgui.WindowXML):
         """
         Ecrit le timer
         """
-        print "TIMER = %s " % self.myTimer.channel
+        debug ( "TIMER = %s " % self.myTimer.channel)
         #Properties pour les timers
         #  status:channel:day    :start:stop:priority:lifetime:filename:
         #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
@@ -330,7 +336,7 @@ class EDITimerWindow(xbmcgui.WindowXML):
                                            self.myTimer.prio,
                                            self.myTimer.lifetime,
                                            self.myTimer.name)
-        print "cmd_svdrp = %s " % cmd_svdrp
+        debug ( "cmd_svdrp = %s " % cmd_svdrp)
         #svdrp write timer command (newt)
         vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         vdrpclient.send_command('newt %s' % cmd_svdrp)
@@ -340,18 +346,18 @@ class EDITimerWindow(xbmcgui.WindowXML):
         """
         actions lorsque on clique sur un bouton du skin EditimerWin
         """
-        print "onClick Editimer = %d " % controlId
+        debug ( "onClick Editimer = %d " % controlId)
         if (controlId == CANCEL):
             self.close()
         elif (controlId == ECRIRE):
             self.writeTimer()
             self.close()
         elif (controlId == ACTIF):
-            print "ControID = ACTIF"
+            debug ( "ControID = ACTIF")
         elif (controlId == CHAINE):
-            print "ControID = CHAINE"
+            debug ( "ControID = CHAINE")
             text = self.getControl( CHAINE ).getLabel()
-            print '==> text = %s ' % text
+            debug ( '==> text = %s ' % text)
             kb = xbmc.Keyboard('default', 'heading', True)
             kb.setHeading('Entrer le nom de la chaîne') # optional
             kb.setDefault(text) # optional
@@ -361,13 +367,13 @@ class EDITimerWindow(xbmcgui.WindowXML):
                 text = kb.getText()
                 self.getControl( CHAINE ).setLabel(text)
         elif (controlId == JOUR):
-            print "ControID = JOUR"
+            debug ( "ControID = JOUR")
         elif (controlId == DEBUT):
-            print "ControID = DEBUT"
+            debug ( "ControID = DEBUT")
         elif (controlId == FIN):
-            print "ControID = FIN"
+            debug ( "ControID = FIN")
         elif (controlId == QUIT):
-            print "ControID = QUIT"
+            debug ( "ControID = QUIT")
             self.close()
 
 class TIMERSWindow(xbmcgui.WindowXML):
@@ -376,21 +382,19 @@ class TIMERSWindow(xbmcgui.WindowXML):
     """
    
     def __init__(self, *args, **kwargs):
-        if DEBUG == True: 
-            print "__INIT__ TIMERSWindow"
-            #writetimer = True si on ecrit un timer
-            self.write = kwargs.get('writetimer')
-            self.myTimer = kwargs.get('timer')
-            print "ARGS = " + repr(args) + " - " + repr(kwargs)
-            print "WriteTimer = %s " % self.write
+        debug ( "__INIT__ TIMERSWindow")
+        #writetimer = True si on ecrit un timer
+        self.write = kwargs.get('writetimer')
+        self.myTimer = kwargs.get('timer')
+        debug ( "ARGS = " + repr(args) + " - " + repr(kwargs))
+        debug ( "WriteTimer = %s " % self.write)
 
     def onInit( self ):
         """
         Initialisation de la classe TIMERSWindow
         """
         #actions = ['Programmes', 'Programmation', 'Enregistrements']
-        if DEBUG == True: 
-            print "Init TIMERSWindow"
+        debug ( "Init TIMERSWindow")
         #writetimer = True on écrit un timer sinon on liste ceux qui existent
         if self.write:
             self.writeTimer()
@@ -415,16 +419,17 @@ class TIMERSWindow(xbmcgui.WindowXML):
         #Envoi le cmd pour lister les timers
         client.send_command('lstt')
         for num, flag, message in client.read_response():
-            print message
+            debug ( message)
             #Stocke les infos dans la classe Timer
             ti = timer.Timer(message)
-            print "num = %s, index = %s, name = %s " % (num, ti.index, ti.name)
-            print 'summary = %s, channel = %s ' % (ti.summary, ti.channel)
-            print 'start = %s, stop = %s'  % (ti.start, ti.stop)
-            print 'recu = %s, prio = %s' % (ti.recurrence, ti.prio)
-            print 'lt = %s, act= %s ' % (ti.lifetime, ti.active)
-            print 'day = %s' % ti.day
-            print ti.vdr
+            debug ( "num = %s, index = %s, name = %s " % (num, ti.index,
+                                                          ti.name))
+            debug ( 'summary = %s, channel = %s ' % (ti.summary, ti.channel))
+            debug ( 'start = %s, stop = %s'  % (ti.start, ti.stop))
+            debug ( 'recu = %s, prio = %s' % (ti.recurrence, ti.prio))
+            debug ( 'lt = %s, act= %s ' % (ti.lifetime, ti.active))
+            debug ( 'day = %s' % ti.day)
+            debug ( ti.vdr)
             timers.append(ti)
         client.close()
 
@@ -432,16 +437,18 @@ class TIMERSWindow(xbmcgui.WindowXML):
         #On parcours les timers
         #pour les mettre dans la listbox
         for prog in timers:
-            print "TIMERS => %s " % str(prog.name)
+            debug ( "TIMERS => %s " % str(prog.name))
             (heure, minute, sec) = decoupe(prog.start)
             h_start = '%02d:%02d' % (heure, minute)
             (heure, minute, sec) = decoupe(prog.stop)
             h_stop = '%02d:%02d' % (heure, minute)
             #On recupere le nom de la chaine en fct de son numéro
             for c_name in self.channels:
-                print "NO = -%d-, CH = -%d- " %  (int(c_name.no), int(prog.channel))
+                debug ( "NO = -%d-, CH = -%d- " %  (int(c_name.no),
+                                                    int(prog.channel)))
                 if int(c_name.no) == int(prog.channel):
-                    print "No = %s, c_name=>.name_tok = %s" % (c_name.no, c_name.name_tok)
+                    debug ( "No = %s, c_name=>.name_tok = %s" % (c_name.no,
+                                                                 c_name.name_tok))
                     prog.channel = c_name.name_tok
                     prog.no_ch = c_name.no
                     break
@@ -484,7 +491,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
         """
         Delete timer in VDR
         """
-        print "Delete TIMER"
+        debug ( "Delete TIMER")
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('delt %s' % index)
         self.vdrpclient.close() 
@@ -493,7 +500,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
         """
         ON/OFF timer in VDR
         """
-        print "ACTIVATE TIMER"
+        debug ( "ACTIVATE TIMER")
         #Properties pour les timers
         #  status:channel:day    :start:stop:priority:lifetime:filename:
         #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
@@ -531,7 +538,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
         """
         actions lorsque on clique sur un bouton du skin
         """
-        print "onClick TIMERWIN = %d " % controlId
+        debug ( "onClick TIMERWIN = %d " % controlId)
         #delete timer
         if ( controlId == DEL):
             dialog = xbmcgui.Dialog()
@@ -549,7 +556,7 @@ class TIMERSWindow(xbmcgui.WindowXML):
                 ret = dialog.yesno(locstr, 
                                    'Effacer timer : %s[CR]Erreur unicode dans le titre' % timer_index)
 
-            print "ret = %s " % ret
+            debug ( "ret = %s " % ret)
             if ret == 1:
                 self.delTimer(timer_index)
                 self.listTimers()
@@ -575,11 +582,11 @@ class TIMERSWindow(xbmcgui.WindowXML):
                 self.listTimers()
  
         elif (controlId == ACTIF):
-            print "ControID = ACTIF"
+            debug ( "ControID = ACTIF")
         elif (controlId == CHAINE):
-            print "ControID = CHAINE"
+            debug ( "ControID = CHAINE")
             text = self.getControl( CHAINE ).getLabel()
-            print '==> text = %s ' % text
+            debug ( '==> text = %s ' % text)
             kb = xbmc.Keyboard('default', 'heading', True)
             kb.setHeading('Entrer le nom de la chaîne') # optional
             kb.setDefault(text) # optional
@@ -589,13 +596,13 @@ class TIMERSWindow(xbmcgui.WindowXML):
                 text = kb.getText()
                 self.getControl( CHAINE ).setLabel(text)
         elif (controlId == JOUR):
-            print "ControID = JOUR"
+            debug ( "ControID = JOUR")
         elif (controlId == DEBUT):
-            print "ControID = DEBUT"
+            debug ( "ControID = DEBUT")
         elif (controlId == FIN):
-            print "ControID = FIN"
+            debug ( "ControID = FIN")
         elif (controlId == QUIT):
-            print "ControID = QUIT"
+            debug ( "ControID = QUIT")
             self.close()
 
 
@@ -606,20 +613,16 @@ class VDRWindow(xbmcgui.WindowXML):
     Window for Timer window
     """
    
-    def __init__(self, *args, **kwargs):
-        if DEBUG == True: 
-            print "__INIT__"
-
     def onInit( self ):
         actions = ['Programmes','Programmation','Enregistrements']
         if DEBUG == True: 
-            print "Init VDRWindow"
+            debug ( "Init VDRWindow")
 
     def onClick( self, controlId ):
         """
         Actions when mouse click on control
         """
-        print "onClick controId = %d " % controlId
+        debug ( "onClick controId = %d " % controlId)
         if (controlId == 1001):
             epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
             epgWIN.doModal()
