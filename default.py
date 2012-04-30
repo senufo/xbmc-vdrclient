@@ -93,6 +93,7 @@ class EPGWindow(xbmcgui.WindowXML):
     def __init__(self, *args, **kwargs):
         if DEBUG == True: 
             print "__INIT__"
+        #Recupere la liste des chaines
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lstc')
         self.channels = []
@@ -108,7 +109,8 @@ class EPGWindow(xbmcgui.WindowXML):
         if DEBUG == True: 
             print "Branch Master"
         for ch in self.channels:
-            listChannel = xbmcgui.ListItem(label=ch.name_tok)
+            print "INDEX = %s, CHANNEL = %s " % (ch.no, ch.name_tok)
+            listChannel = xbmcgui.ListItem(label=ch.no, label2=ch.name_tok)
             listChannel.setProperty("serveur", ch.name_tok )
             self.getControl( CHANNELS_LIST ).addItem( listChannel )
 
@@ -121,7 +123,7 @@ class EPGWindow(xbmcgui.WindowXML):
         Dialog.create(locstr)
         locstr = __addon__.getLocalizedString(id=601) #Please wait
         Dialog.update(0, locstr)
-        #Variable pour la progression dans la boite de dialogue²
+        #Variable pour la progression dans la boite de dialogue
         up = 1
         self.getControl( EPG_LIST ).reset()
 
@@ -222,7 +224,6 @@ class EPGWindow(xbmcgui.WindowXML):
                                      ).getSelectedItem().getProperty('lifetime')
         epg_filename = self.getControl( EPG_LIST 
                                      ).getSelectedItem().getProperty('filename')
-
         #Stocke les infos dans la classe Timer
         ti = timer.Timer()
         ti.index = 0

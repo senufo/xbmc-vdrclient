@@ -257,14 +257,25 @@
             <posy>0</posy>
             <width>275</width>
             <height>38</height>
-            <font>font18</font>
+            <font>font10</font>
             <aligny>center</aligny>
             <textcolor>white</textcolor>
             <selectedcolor>green</selectedcolor>
             <align>left</align>
             <info>ListItem.Label</info>
           </control>
-          
+          <control type="label">
+            <posx>50</posx> --> <!-- position de 2eme element non selectionne -->
+            <posy>0</posy>
+            <width>220</width>
+            <height>38</height>
+            <font>font10</font>
+            <aligny>center</aligny>
+            <textcolor>white</textcolor>
+            <selectedcolor>green</selectedcolor>
+            <align>left</align>
+            <info>ListItem.Label2</info>
+          </control>
         </itemlayout>
         <focusedlayout height="38">
           <control type="image"> <!-- Image de item selectionne -->
@@ -281,14 +292,26 @@
             <posy>0</posy>
             <width>400</width>
             <height>38</height>
-            <font>font19</font>
+            <font>font16caps</font>
             <aligny>center</aligny>
             <textcolor>white</textcolor>
             <selectedcolor>green</selectedcolor>
             <align>left</align>
             <info>ListItem.Label</info>
           </control>
-        </focusedlayout>
+          <control type="label">
+            <posx>50</posx> --> <!-- position de 2eme element non selectionne -->
+            <posy>0</posy>
+            <width>220</width>
+            <height>38</height>
+            <font>font16caps</font>
+            <aligny>center</aligny>
+            <textcolor>yellow</textcolor>
+            <selectedcolor>green</selectedcolor>
+            <align>left</align>
+            <info>ListItem.Label2</info>
+          </control>
+       </focusedlayout>
       </control>
 
     </control>
