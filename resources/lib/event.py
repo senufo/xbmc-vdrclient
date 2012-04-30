@@ -71,7 +71,7 @@ class Event:
         successfully, false else.
         """
         tokens = str.split()
-        print "tokens = %s , len = %d " % (tokens, len(tokens))
+        #print "tokens = %s , len = %d " % (tokens, len(tokens))
         #if len(tokens) < 3 or len(tokens) > 4:
         #    return 0
         self.id = int(tokens[0])
@@ -79,5 +79,5 @@ class Event:
         self.dur = int(tokens[2])
         if len(tokens) == 4:
             self.tableID = tokens[3]
-        print "id = %d , start = %d, dur = %d " % (self.id, self.start,self.dur)
+        #print "id = %d , start = %d, dur = %d " % (self.id, self.start,self.dur)
         return 1

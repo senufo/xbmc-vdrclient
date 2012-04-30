@@ -250,10 +250,16 @@ class EPGWindow(xbmcgui.WindowXML):
         ti.active = ''
         ti.day = epg_day
         #On passe les valeurs du timer a la classe editimer
-        write_timerWIN = EDITimerWindow( "editimersWIN.xml" , __cwd__,
+        try:
+            write_timerWIN = EDITimerWindow( "editimersWIN.xml" , __cwd__,
+                                      'aeon.nox.svn',writetimer=True, timer=ti,
+                                        channel_name=epg_channel)
+        except:
+            write_timerWIN = EDITimerWindow( "editimersWIN.xml" , __cwd__,
                                       "Default",writetimer=True, timer=ti,
                                         channel_name=epg_channel)
         write_timerWIN.doModal()
+        del write_timerWIN
 
     def onClick( self, controlId ):
         """
@@ -615,8 +621,7 @@ class VDRWindow(xbmcgui.WindowXML):
    
     def onInit( self ):
         actions = ['Programmes','Programmation','Enregistrements']
-        if DEBUG == True: 
-            debug ( "Init VDRWindow")
+        debug ( "Init VDRWindow")
 
     def onClick( self, controlId ):
         """
@@ -624,10 +629,17 @@ class VDRWindow(xbmcgui.WindowXML):
         """
         debug ( "onClick controId = %d " % controlId)
         if (controlId == 1001):
-            epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
+            #epgWIN = EPGWindow( "epgWIN.xml" , __cwd__, "Default")
+            try:
+                epgWIN = EPGWindow( "epgWIN.xml" , __cwd__,'aeon.nox.svn')
+            except:
+                epgWIN = EPGWindow( "epgWIN.xml" , __cwd__)
             epgWIN.doModal()
         elif (controlId == 1002):
-            timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
+            try:
+                timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, 'aeon.nox.svn')
+            except:
+                timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
             timersWIN.doModal()
             del timersWIN
         #elif (controlId == 1003):
@@ -639,6 +651,10 @@ class VDRWindow(xbmcgui.WindowXML):
         elif (controlId == QUIT):
             self.close()
 
-mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__, "Default")
+try:
+    mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__,'aeon.nox.svn' )
+except:
+    mydisplay = VDRWindow( "script-svdrp-main.xml" , __cwd__, "Default")
+
 mydisplay.doModal()
 del mydisplay

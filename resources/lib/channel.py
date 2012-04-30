@@ -106,7 +106,7 @@ class Channel:
         tokens = definition.strip().split(':')
         self.name = tokens[0]
         self.no, self.name = re.split(' ', self.name, maxsplit=1)
-        print "iNO = %s" % self.no
+        #print "iNO = %s" % self.no
         self.nametokens = self.name.split(';')
         self.name_tok = self.nametokens[0]
         if len(self.nametokens)>1:
