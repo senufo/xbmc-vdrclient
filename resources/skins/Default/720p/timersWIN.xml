@@ -197,7 +197,7 @@
       <!-- Texte du coté gauche -->
       <control type="label" >
         <description>Label ACTIF</description>
-        <posx>220</posx>
+        <posx>600</posx>
         <posy>350</posy>
         <width>200</width>
         <height>40</height>
@@ -208,9 +208,9 @@
         <label>$ADDON[script.svdrpclient 33610]</label>
       </control>
  
-      <control type="button" id="201">
+      <control type="label" id="201">
         <description>Actif</description>
-        <posx>300</posx>
+        <posx>680</posx>
         <posy>350</posy>
         <width>250</width>
         <height>40</height>
@@ -222,7 +222,7 @@
       </control> 
       <control type="label" >
         <description>Label CHAINE</description>
-        <posx>220</posx>
+        <posx>600</posx>
         <posy>400</posy>
         <width>200</width>
         <height>40</height>
@@ -232,9 +232,9 @@
         <align>right</align>
         <label>$ADDON[script.svdrpclient 33611]</label>
      </control>
-     <control type="button" id="202">
+     <control type="label" id="202">
         <description>Chaine</description>
-        <posx>300</posx>
+        <posx>680</posx>
         <posy>400</posy>
         <width>250</width>
         <height>40</height>
@@ -246,7 +246,7 @@
       </control>
       <control type="label" >
         <description>Label JOUR</description>
-        <posx>220</posx>
+        <posx>600</posx>
         <posy>450</posy>
         <width>200</width>
         <height>40</height>
@@ -256,9 +256,9 @@
         <align>right</align>
         <label>$ADDON[script.svdrpclient 33612]</label>
       </control>
-      <control type="button" id="203">
+      <control type="label" id="203">
         <description>Jour</description>
-        <posx>300</posx>
+        <posx>680</posx>
         <posy>450</posy>
         <width>250</width>
         <height>40</height>
@@ -270,7 +270,7 @@
       </control>
       <control type="label" >
         <description>Label DEBUT</description>
-        <posx>220</posx>
+        <posx>600</posx>
         <posy>500</posy>
         <width>200</width>
         <height>40</height>
@@ -280,9 +280,9 @@
         <align>right</align>
         <label>$ADDON[script.svdrpclient 33613]</label>
       </control>
-     <control type="button" id="204">
+     <control type="label" id="204">
         <description>Debut</description>
-        <posx>300</posx>
+        <posx>680</posx>
         <posy>500</posy>
         <width>250</width>
         <height>40</height>
@@ -294,7 +294,7 @@
       </control>
       <control type="label" >
         <description>Label FIN</description>
-        <posx>220</posx>
+        <posx>600</posx>
         <posy>550</posy>
         <width>200</width>
         <height>40</height>
@@ -304,9 +304,9 @@
         <align>right</align>
         <label>$ADDON[script.svdrpclient 33614]</label>
       </control>
-      <control type="button" id="205">
+      <control type="label" id="205">
         <description>Fin</description>
-        <posx>300</posx>
+        <posx>680</posx>
         <posy>550</posy>
         <width>250</width>
         <height>40</height>
@@ -316,7 +316,19 @@
         <hinttext>$INFO[Container(120).ListItem.Property(stop)]</hinttext>
         <font>font14</font>
       </control>
-   
+      <control type="label">
+        <description>Titre</description>
+        <posx>200</posx>
+        <posy>350</posy>
+        <width>450</width>
+        <height>40</height>
+        <visible>true</visible>
+        <aligny>center</aligny>
+        <label>$INFO[Container(120).ListItem.Property(filename)]</label>
+        <font>font16caps</font>
+        <textcolor>red</textcolor>
+      </control>
+  
 
       <!-- Liste des timers                          -->
       <control type="list" id="120">
