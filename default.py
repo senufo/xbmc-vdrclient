@@ -35,9 +35,11 @@ import timer
 
 DEBUG = True
 # VDR server
-VDR_HOST = '127.0.0.1'
-VDR_PORT = 6419
-VDR_PORT = 2001
+VDR_HOST = __addon__.getSetting('host1')
+#VDR_HOST = '127.0.0.1'
+#VDR_PORT = 6419
+#VDR_PORT = 2001
+VDR_PORT = __addon__.getSetting('port1')
 #Label SKIN XML
 
 #ID des boutons dans .xml

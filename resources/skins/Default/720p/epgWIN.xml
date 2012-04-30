@@ -1,3 +1,18 @@
+<!--
++==========+===========================+
+|liste des | Liste des infos epg       |
+|chaînes   | id=120                    |
+|id=1200   +===========================+
+|          |Desscription du programme  |
+|          |id=102                     |
+|          |                           |
++======================================+
+|Nom de la                             |
+|chaine         Date            Quitter|
+|selectionnée                   id=1004|
+|id = 101                              |
++======================================+
+-->
 <window>
   <defaultcontrol>1200</defaultcontrol>
   <coordinates>
@@ -30,7 +45,7 @@
         <textcolor>white</textcolor>
         <aligny>center</aligny>
         <align>right</align>
-        <label>CHAINE</label>
+        <label>$ADDON[script.svdrpclient 33611]</label> 
       </control>
      
       <control type="label">
@@ -86,26 +101,6 @@
         <height>2</height>
         <texture>GMseparator.png</texture>
 </control>
-<control type="button" id="1006">
-          <description>button control Timers</description>
-          <posx>900</posx>
-          <posy>625</posy>
-          <width>135</width>
-          <height>35</height>
-          <align>center</align>
-          <aligny>center</aligny>
-          <visible>true</visible>
-          <colordiffuse>FFFFFFFF</colordiffuse>
-          <label>$ADDON[script.svdrpclient 33603]</label>
-          <!-- <label>Play Video</label> -->
-          <font>font14</font>
-          <textcolor>FFFFFFFF</textcolor>
-          <disabledcolor>80FFFFFF</disabledcolor>
-          <onup>1200</onup>
-          <ondown>1200</ondown>
-          <onleft>120</onleft>
-          <onright>1004</onright>
-       </control>
 
 <!-- Bouton quitter -->
        <control type="button" id="1004">
@@ -118,7 +113,7 @@
           <aligny>center</aligny>
           <visible>true</visible>
           <colordiffuse>FFFFFFFF</colordiffuse>
-          <label>$ADDON[script.headlines 33604]</label>
+          <label>$ADDON[script.svdrpclient 33604]</label>
           <!-- <label>Quit</label> -->
           <font>font14</font>
           <textcolor>FFFFFFFF</textcolor>
@@ -155,9 +150,9 @@
       
 
       <!-- ** Required ** Do not change <id> or <type> -->
-      <!-- Liste des messages                          -->
+      <!-- Liste des epg                          -->
       <control type="list" id="120">
-        <description>Liste des flux rss</description>
+        <description>Liste des epg</description>
         <posx>300</posx>
         <posy>26</posy>
         <width>1040</width>
@@ -190,20 +185,6 @@
             <align>left</align>
             <info>ListItem.Label</info>
           </control>
-          
-          <!-- <control type="label">
-            <posx>500</posx> --> <!-- position de 2eme element non selectionne -->
-           <!--  <posy>0</posy>
-            <width>680</width>
-            <height>38</height>
-            <font>font18</font>
-            <aligny>center</aligny>
-            <textcolor>white</textcolor>
-            <selectedcolor>green</selectedcolor>
-            <align>left</align>
-            <info>ListItem.Label2</info>
-          </control> -->
-
         </itemlayout>
         <focusedlayout height="38">
           <control type="image"> <!-- Image de item selectionne -->
@@ -227,20 +208,6 @@
             <align>left</align>
             <info>ListItem.Label</info>
           </control>
-          
-          <control type="label">
-            <posx>500</posx>
-            <posy>0</posy>
-            <width>680</width>
-            <height>38</height>
-            <font>font18</font>
-            <aligny>center</aligny>
-            <textcolor>white</textcolor>
-            <selectedcolor>green</selectedcolor>
-            <align>left</align>
-            <info>ListItem.Property(realname)</info>
-	  </control>
-
         </focusedlayout>
       </control>
       <control type="group">

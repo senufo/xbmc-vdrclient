@@ -9,6 +9,10 @@
     <string id="606">Voulez-vous %s la programmation :[CR] %s ?</string>
     <string id="607">activer</string>
     <string id="608">dé-activer</string>
+
+    <string id="30100">hôte</string>
+    <string id="30101">port</string>
+
     <string id="33603">Programmation</string>
     <string id="33604">Quitter</string>
     <string id="33605">Actif (O/N)</string>

@@ -8,6 +8,8 @@
     <string id="605">Activate timer</string>
     <string id="606">Do you want %s this timer :[CR] %s ?</string>
     <string id="607">activate</string>
+    <string id="30100">host</string>
+    <string id="30101">port</string>
     <string id="608">de-activate</string>
     <string id="33603">Timers</string>
     <string id="33604">Quit</string>
