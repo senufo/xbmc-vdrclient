@@ -109,14 +109,17 @@ class EPGWindow(xbmcgui.WindowXML):
         if DEBUG == True: 
             print "Branch Master"
         for ch in self.channels:
-            print "INDEX = %s, CHANNEL = %s " % (ch.no, ch.name_tok)
+            #Affiche le numero et le nom de la chaine
             listChannel = xbmcgui.ListItem(label=ch.no, label2=ch.name_tok)
-            listChannel.setProperty("serveur", ch.name_tok )
+            listChannel.setProperty('channel_name', ch.name_tok )
+            listChannel.setProperty('channel_no', ch.no )
             self.getControl( CHANNELS_LIST ).addItem( listChannel )
 
-    def getEPG(self, ch):
+    def getEPG(self, ch_name, ch_no):
         """
-        Recupere l'EPG sur VDR
+        Get EPG in  VDR server
+        ch_name = channel name
+        ch_no = channel's number in VDR
         """
         Dialog = xbmcgui.DialogProgress()
         locstr = __addon__.getLocalizedString(id=600) #Get EPG data
@@ -125,15 +128,16 @@ class EPGWindow(xbmcgui.WindowXML):
         Dialog.update(0, locstr)
         #Variable pour la progression dans la boite de dialogue
         up = 1
+        #On remet à zéro la liste des epg
         self.getControl( EPG_LIST ).reset()
 
-        for c_name in self.channels:
+        #for c_name in self.channels:
             #Cherche le numéro de la chaine en fct du nom
-            if c_name.name_tok == ch:
-                c_no = c_name.no
+        #    if c_name.name_tok == ch:
+        #        c_no = c_name.no
         #Liste les prog de la chaine c_no
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
-        self.vdrpclient.send_command('lste %s' % c_no)
+        self.vdrpclient.send_command('lste %s' % ch_no)
         Titre, SousTitre, Description = ('', '', '')
         ev = event.Event()
         #nbEPG = len(self.vdrpclient.read_response())
@@ -178,8 +182,8 @@ class EPGWindow(xbmcgui.WindowXML):
                     #Properties pour les timers
                     #  status:channel:day    :start:stop:priority:lifetime:filename:
                     #1 0     :      3:MT-TF--: 0644:0902:      50:      30:    Ludo:
-                    listEPGItem.setProperty( "channel", ch)
-                    listEPGItem.setProperty( "no_ch", c_no)
+                    listEPGItem.setProperty( "channel", ch_name)
+                    listEPGItem.setProperty( "no_ch", ch_no)
                     listEPGItem.setProperty( "day", time.strftime('%Y-%m-%d', time_start))
                     listEPGItem.setProperty( "start", '%02d%02d' %
                                             (time_start.tm_hour,time_start.tm_min))
@@ -202,7 +206,7 @@ class EPGWindow(xbmcgui.WindowXML):
         Dialog.close()       
 
         self.vdrpclient.close()
-        self.getControl( CHAINE_EPG ).setLabel( '%s' % ch )
+        self.getControl( CHAINE_EPG ).setLabel( '%s' % ch_name )
 
     def selectTimer(self):
         """
@@ -250,9 +254,11 @@ class EPGWindow(xbmcgui.WindowXML):
         print "onClick controId = %d " % controlId
         #Clic sur un nom de chaine
         if (controlId == CHANNELS_LIST):
-            label = self.getControl( controlId
-                                   ).getSelectedItem().getProperty('serveur')
-            self.getEPG(label)
+            channel_name = self.getControl( controlId
+                                   ).getSelectedItem().getProperty('channel_name')
+            channel_no = self.getControl( controlId
+                                   ).getSelectedItem().getProperty('channel_no')
+            self.getEPG(channel_name, channel_no)
         #Clic sur un event epg
         elif (controlId == EPG_LIST):
             self.selectTimer()
