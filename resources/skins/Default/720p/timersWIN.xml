@@ -47,7 +47,7 @@
       <!-- separation entre list et description timer -->
        <control type="image">
         <posx>100</posx>
-        <posy>330</posy>
+        <posy>300</posy>
         <width>1150</width>
         <height>20</height>
         <texture>GMseparator.png</texture>
@@ -318,9 +318,9 @@
       </control>
       <control type="label">
         <description>Titre</description>
-        <posx>200</posx>
-        <posy>350</posy>
-        <width>450</width>
+        <posx>500</posx>
+        <posy>320</posy>
+        <width>550</width>
         <height>40</height>
         <visible>true</visible>
         <aligny>center</aligny>
@@ -336,7 +336,7 @@
         <posx>100</posx>
         <posy>70</posy>
         <width>1240</width>
-	<height>250</height>
+	<height>240</height>
 	<onleft>2001</onleft>  <!-- définiton du controle -->
         <onright>1004</onright>
 	<!-- <onup>1001</onup>
@@ -427,7 +427,7 @@
           <posx>0</posx>
           <posy>0</posy>
           <width>12</width>
-          <height>250</height>
+          <height>225</height>
           <texturesliderbackground border="6">default-scroll_back.png</texturesliderbackground>
           <texturesliderbar border="6">default-scroll_mid.png</texturesliderbar>
           <texturesliderbarfocus border="6">default-scroll_mid.png</texturesliderbarfocus>
