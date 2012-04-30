@@ -541,9 +541,14 @@ class TIMERSWindow(xbmcgui.WindowXML):
                                    ).getSelectedItem().getProperty('filename')
             locstr = __addon__.getLocalizedString(id=603) #Delete
             locstr2 = __addon__.getLocalizedString(id=604) #Do you want del timer No
-
-            ret = dialog.yesno(locstr, locstr2 %
+            #Fix temporary unicode error
+            try:
+                ret = dialog.yesno(locstr, locstr2 %
                                (timer_index, timer_name))
+            except:
+                ret = dialog.yesno(locstr, 
+                                   'Effacer timer : %s[CR]Erreur unicode dans le titre' % timer_index)
+
             print "ret = %s " % ret
             if ret == 1:
                 self.delTimer(timer_index)
