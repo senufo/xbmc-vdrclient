@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category>
+       <setting id="debug" type="bool" label="debug" default="False"/>
+    </category>
+    <category label="Serveur 1">
+       <setting id="host1" type="text"  label="30100" default="localhost"/>
+       <setting id="port1" type="text"  label="30101" default="6419"/>
+    </category>
+    <category label="Serveur 2">
+       <setting id="host2" type="text"  label="30100" default=""/>
+       <setting id="port2" type="text"  label="30101" default=""/>
+    </category>
+    <category label="Serveur 3">
+       <setting id="host3" type="text"  label="30100" default=""/>
+       <setting id="port3" type="text"  label="30101" default=""/>
+    </category>
+</settings>
+
