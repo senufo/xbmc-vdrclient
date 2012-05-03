@@ -72,7 +72,7 @@
 				<pulseonselect>no</pulseonselect>
 				<label>Programmation</label>
 			</control>
-			<control type="button" id="1003">
+		<control type="button" id="1003">
 				<width>340</width>
 				<height>40</height>
 				<textcolor>FF999999</textcolor>
@@ -83,6 +83,18 @@
 				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>Enregistrements</label>
+			</control>
+	        	<control type="button" id="1004">
+				<width>340</width>
+				<height>40</height>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<align>center</align>
+				<textwidth>290</textwidth>
+				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<pulseonselect>no</pulseonselect>
+				<label>Quitter</label>
 			</control>
 			<control type="image" id="1998">
 				<description>background bottom image</description>

@@ -43,6 +43,7 @@ import svdrp
 import event
 import channel
 import timer
+import recording
 
 # VDR server
 VDR_HOST = __addon__.getSetting('host1')
@@ -103,6 +104,7 @@ class EPGWindow(xbmcgui.WindowXML):
     def __init__(self, *args, **kwargs):
         debug( "__INIT__")
         #Recupere la liste des chaines
+        debug('VDR_HOST = %s, PORT = %s ' % (VDR_HOST, VDR_PORT))
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lstc')
         self.channels = []
@@ -283,6 +285,37 @@ class EPGWindow(xbmcgui.WindowXML):
         #Clic pour quitter
         elif (controlId == QUIT):
             self.close()
+
+class RecordsWindow(xbmcgui.WindowXML):
+    """
+    List and delete vdr records
+    """
+
+    def  onInit( self ):
+        """
+        Initialisation de la classe EDITIMERWindow
+        """
+        debug ( 'INIT RecordsWindow')
+        self.listRecords()
+
+    def listRecords(self):
+        """
+        Liste les timers de VDR et les affiche
+        """
+        self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
+        self.vdrpclient.send_command('lstr')
+        self.records = []
+        for num, flag, message in self.vdrpclient.read_response(): 
+            print '=> %d, %s, %s ' % (num, flag, message)
+            #rec = recording.Recording(message)
+            #self.records.append(rec)
+        self.vdrpclient.close()
+        #for rec in self.records:
+        #    print "source = %s " % rec.source
+        #    print "index = %s " % rec.index
+        #    print "name = %s " % rec.name
+        #    print "summary = %s " % rec.summary
+
 
 class EDITimerWindow(xbmcgui.WindowXML):
     """
@@ -642,12 +675,11 @@ class VDRWindow(xbmcgui.WindowXML):
                 timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
             timersWIN.doModal()
             del timersWIN
-        #elif (controlId == 1003):
-        #    timersWIN = xbmcgui.WindowXML( "fixed.xml" , __cwd__, "Default")
-            #timersWIN = TIMERSWindow( "timersWIN.xml" , __cwd__, "Default")
-        #    timersWIN.doModal()
-        #    del timersWIN
-
+        elif (controlId == 1003):
+            recordsWIN = RecordsWindow( "recordsWIN.xml", __cwd__,
+                                       'aeon.nox.svn')
+            recordsWIN.doModal()
+            del recordsWIN
         elif (controlId == QUIT):
             self.close()
 
