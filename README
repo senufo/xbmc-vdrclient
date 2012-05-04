@@ -1,10 +1,18 @@
-====
+======================
 SVDRP client for xbmc
-====
+======================
 
-based on vdrpylib-0.3
+Based on vdrpylib-0.3, python library for Video Disk Recorder (VDR)
+The address of the original library
+Version 0.2: https://sourceforge.net/projects/vdrpylib/files/
+Version 0.3: http://people.debian.org/ ~ tschmidt / maemo / chinook / vdrpylib /
 
 Introduction
 ------------
 
-todo
+This is an interface for XBMC that allows communication with VDR through the protocol SVDRP VDR.
+SVDRP: http://www.linuxtv.org/vdrwiki/index.php/SVDRP
+For the momment is functionnal :
+* The program guide, function *lste* SVDRP
+* The programming, function *lstt* SVDRP
+* The records, function *lstr* SVDRP (ongoing)
