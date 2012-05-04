@@ -300,22 +300,83 @@ class RecordsWindow(xbmcgui.WindowXML):
 
     def listRecords(self):
         """
-        Liste les timers de VDR et les affiche
+        Liste les records de VDR et les affiche
         """
-        self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
-        self.vdrpclient.send_command('lstr')
+################################################
+        tps1 = time.time()
+        self.vdrpclient = SVDRPClient(VDR_HOST, VDR_PORT)
         self.records = []
-        for num, flag, message in self.vdrpclient.read_response(): 
-            print '=> %d, %s, %s ' % (num, flag, message)
-            #rec = recording.Recording(message)
-            #self.records.append(rec)
-        self.vdrpclient.close()
-        #for rec in self.records:
-        #    print "source = %s " % rec.source
-        #    print "index = %s " % rec.index
-        #    print "name = %s " % rec.name
-        #    print "summary = %s " % rec.summary
+        NbEPG = 500
+        #Flag pour vérifier que l'on n'a pas attient la fin de records
+        end = True
+        for i in range(1,NbEPG):
+            if end:
+                #print "=" * 30
+                ev = event.Event()
+                self.svdrpclient.send_command('lstr %d' % i)
+                for num, flag, message in self.svdrpclient.read_response():
+                    #print "%d, %s, %s " % (num, flag, message)
+                    if num != 550:
+                        #Parse l'EPG renvoyé par VDR
+                        if message[0] == 'T':
+                            ev.title = message[2:]
+                            #print "TITLE = %s " % ev.title
+                        elif message[0] == 'C':
+                            ev.channel = message[2:]
+                        elif message[0] == 'S':
+                            ev.subtitle = message[2:]
+                            #print "subTITLE = %s " % ev.subtitle
+                        elif message[0] == 'D':
+                            Description  = message[2:]
+                            ev.desc = Description.replace('|','\n')
+                        elif message[0] == 'E' and message != 'End of recording information':
+                            #try:
+                            if 1:
+                                heure = message[2:].split(' ')
+                                time_start = time.gmtime(int(heure[1]))
+                                ev.heure_start = '%02d:%02d' % (time_start.tm_hour,time_start.tm_min)
+                                ev.date = '%02d-%02d-%04d' % (time_start.tm_wday,
+                                                              time_start.tm_mon,time_start.tm_year)
+                                ev.duree = '%04d' % int(heure[2])
+                    #print '=>%s : %s : %s : %s' % (ev.date,ev.heure_start, ev.duree, ev.title)
+                    #550 = error record not found
+                    elif num == 550:
+                        print "&" * 60
+                        print "%d, %s, %s " % (num, flag, message)
+                        print "&" * 60
 
+                        end = False 
+                        break
+                if end:
+                    self.records.append(ev) 
+            else:
+                print "+" * 60
+                break
+        client.close()
+        y = 1
+        for record in self.records:
+            print "=" * 60
+            print '=> %02d: %s : %s : %s : %s' % (y, record.date,record.heure_start, record.duree,
+                                         record.title)
+            y += 1
+            listRecordItem = xbmcgui.ListItem( label=record.title)
+            description = '%s\n====\n%s\n====\n%s' % (record.title,
+                                                      record.subtitle, record.desc )
+            listRecordItem.setProperty( "description", description )
+            listRecordItem.setProperty( "date", record.date)
+            listRecordtem.setProperty( "heure_start", record.heure_start)
+            listRecordItem.setProperty( "duree", record.duree)
+            listRecordItem.setProperty( "filename", record.title)
+
+            self.getControl( 120 ).addItem( listRecordItem )
+
+            #print '%s' % ev.desc
+        tps2 = time.time()
+        print "tps1 = %f " %tps1
+        print "tps2 = %f " %tps2
+        print(tps2 - tps1)
+
+################################################
 
 class EDITimerWindow(xbmcgui.WindowXML):
     """

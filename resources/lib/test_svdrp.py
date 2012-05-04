@@ -55,20 +55,22 @@ client = SVDRPClient(VDR_HOST, VDR_PORT)
 #client.send_command('chan')
 #client.send_command('help')
 #client.send_command('lstc')
-client.send_command('lstr')
+#client.send_command('lstr')
 #cmd_svdrp = '1:37:2012-04-27:1730:1745:50:30:C Ã  dire:'
 #client.send_command('NEWT %s' % cmd_svdrp)
 #client.close()
 #exit()
 
 #num = 0
-nbrep = len(client.read_response())
-print "LEN = %s " %nbrep
-ev = event.Event()
+#nbrep = len(client.read_response())
+#print "LEN = %s " %nbrep
+#ev = event.Event()
+records = []
 #nbEPG = len(self.vdrpclient.read_response())
 NbEPG = 500
-for i in range(1,10):
+for i in range(1,NbEPG):
     print "=" * 30
+    ev = event.Event()
     client.send_command('lstr %d' % i)
     """
     C I-1-1-1007 TMC 
@@ -89,55 +91,57 @@ for i in range(1,10):
     End of recording information 
     """
     for num, flag, message in client.read_response():
-        print "%s " % message
-        #Parse l'EPG renvoyé par VDR
-        if message[0] == 'T':
-            ev.title = message[2:]
-        elif message[0] == 'C':
-            ev.channel = message[2:]
-        elif message[0] == 'S':
-            ev.subtitle = message[2:]
-        elif message[0] == 'D':
-            Description  = message[2:]
-            ev.desc = Description.replace('|','\n')
-        elif message[0] == 'E' and message != 'End of recording information':
-            # event start
-            #ev.parseheader(message[2:])
-            ev.source = 'vdr'
-        if message[0] == 'E':
-            #debug ( 'Messge = %s' % message)
-            #try:
-            if 1:
-                #heure,date,dur,x,y = message[2:].split(' ')
-                heure = message[2:].split(' ')
-                print "HEURE = %s " % heure
-                #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
-                #Tient compte du fuseau horaire
-#                if time.daylight != 0:
-#                    time_start = int(ev.start) - time.altzone
-#                else:
-#                    time_start = int(ev.start)
-#                stop = time_start + ev.dur
-                time_start = time.gmtime(int(heure[0]))
-                time_stop = time.gmtime(int(heure[1]))
-                (year,mois, mday, heure, min, sec) = time.gmtime(int(heure[1]))
-                print (year,mois, mday, heure, min, sec)
-                #Debut, Fin et Nom de l'EPG
-                epg_data = ('%02d:%02d - %02d:%02d : %s' %
-                    (time_start.tm_hour,time_start.tm_min,time_stop.tm_hour,time_stop.tm_min, ev.title))
-                print "EPD = %s " % epg_data
- 
-
-
-
-
-
-#message = client.read_line()
-    print message
-    #index = message.split(' ')
-    #print "INDEX = %s" % (index)
+        print "%d, %s, %s " % (num, flag, message)
+        if num != 550:
+            #Parse l'EPG renvoyé par VDR
+            if message[0] == 'T':
+                ev.title = message[2:]
+                print "TITLE = %s " % ev.title
+            elif message[0] == 'C':
+                ev.channel = message[2:]
+            elif message[0] == 'S':
+                ev.subtitle = message[2:]
+                print "subTITLE = %s " % ev.subtitle
+            elif message[0] == 'D':
+                Description  = message[2:]
+                ev.desc = Description.replace('|','\n')
+            elif message[0] == 'E' and message != 'End of recording information':
+                #try:
+                if 1:
+                    heure = message[2:].split(' ')
+                    #print "HEURE = %s " % heure
+                    #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
+                    #Tient compte du fuseau horaire
+    #                if time.daylight != 0:
+    #                    time_start = int(ev.start) - time.altzone
+    #                else:
+    #                    time_start = int(ev.start)
+    #                stop = time_start + ev.dur
+                    #time_start = time.gmtime(int(heure[0]))
+                    #time_stop = time.gmtime(int(heure[1]))
+                    time_start = time.gmtime(int(heure[1]))
+                    #print (year,mois, mday, heure, min, sec)
+                    #Debut, Fin et Nom de l'EPG
+                    ev.heure_start = '%02d:%02d' % (time_start.tm_hour,time_start.tm_min)
+                    ev.date = '%02d-%02d-%04d' % (time_start.tm_wday,
+                                                  time_start.tm_mon,time_start.tm_year)
+                    ev.duree = '%04d' % int(heure[2])
+                    #epg_data = ('%02d:%02d : %04d-%02d-%02d' % (time_start.tm_hour,time_start.tm_min,
+                    #     time_start.tm_year,time_start.tm_mon, time_start.tm_wday
+                    #     ))
+                    #print "EPD = ->%s<-, duree = %s" % (ev.date, ev.duree)
+        print '=>%s : %s : %s : %s' % (ev.date,ev.heure_start, ev.duree, ev.title)
+        records.append(ev) 
+    else:
+        i = 600
+        break
 client.close()
 
+for record in records:
+    print "=" * 60
+    print '%s : %s : %s : %s' % (record.date,record.heure_start, record.duree,
+                                 record.title)
+    #print '%s' % ev.desc
 exit()
 
 channels = []
