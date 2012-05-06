@@ -303,19 +303,24 @@ class RecordsWindow(xbmcgui.WindowXML):
         Liste les records de VDR et les affiche
         """
 ################################################
+        Dialog = xbmcgui.DialogProgress()
+        locstr = __addon__.getLocalizedString(id=600) #Get EPG data
+        Dialog.create(locstr)
+        locstr = __addon__.getLocalizedString(id=601) #Please wait
+        Dialog.update(0, locstr)
         tps1 = time.time()
-        self.vdrpclient = SVDRPClient(VDR_HOST, VDR_PORT)
+        self.svdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.records = []
         NbEPG = 500
         #Flag pour vérifier que l'on n'a pas attient la fin de records
         end = True
         for i in range(1,NbEPG):
             if end:
-                #print "=" * 30
+                print "=" * 30
                 ev = event.Event()
                 self.svdrpclient.send_command('lstr %d' % i)
                 for num, flag, message in self.svdrpclient.read_response():
-                    #print "%d, %s, %s " % (num, flag, message)
+                    print "%d, %s, %s " % (num, flag, message)
                     if num != 550:
                         #Parse l'EPG renvoyé par VDR
                         if message[0] == 'T':
@@ -352,7 +357,7 @@ class RecordsWindow(xbmcgui.WindowXML):
             else:
                 print "+" * 60
                 break
-        client.close()
+        self.svdrpclient.close()
         y = 1
         for record in self.records:
             print "=" * 60
@@ -364,9 +369,9 @@ class RecordsWindow(xbmcgui.WindowXML):
                                                       record.subtitle, record.desc )
             listRecordItem.setProperty( "description", description )
             listRecordItem.setProperty( "date", record.date)
-            listRecordtem.setProperty( "heure_start", record.heure_start)
+            listRecordItem.setProperty( "heure_start", record.heure_start)
             listRecordItem.setProperty( "duree", record.duree)
-            listRecordItem.setProperty( "filename", record.title)
+            #listRecordItem.setProperty( "filename", record.title)
 
             self.getControl( 120 ).addItem( listRecordItem )
 
