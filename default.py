@@ -360,22 +360,25 @@ class RecordsWindow(xbmcgui.WindowXML):
         self.svdrpclient.close()
         y = 1
         for record in self.records:
-            print "=" * 60
-            print '=> %02d: %s : %s : %s : %s' % (y, record.date,record.heure_start, record.duree,
+            #print "=" * 60
+            try:
+                print '=> %02d: %s : %s : %s : %s' % (y, record.date,record.heure_start, record.duree,
                                          record.title)
-            y += 1
-            listRecordItem = xbmcgui.ListItem( label=record.title)
-            description = '%s\n====\n%s\n====\n%s' % (record.title,
+                y += 1
+                listRecordItem = xbmcgui.ListItem( label=record.title)
+                description = '%s\n====\n%s\n====\n%s' % (record.title,
                                                       record.subtitle, record.desc )
-            listRecordItem.setProperty( "description", description )
-            listRecordItem.setProperty( "date", record.date)
-            listRecordItem.setProperty( "heure_start", record.heure_start)
-            listRecordItem.setProperty( "duree", record.duree)
-            #listRecordItem.setProperty( "filename", record.title)
+                listRecordItem.setProperty( "description", description )
+                listRecordItem.setProperty( "date", record.date)
+                listRecordItem.setProperty( "heure_start", record.heure_start)
+                listRecordItem.setProperty( "duree", record.duree)
+                #listRecordItem.setProperty( "filename", record.title)
 
-            self.getControl( 120 ).addItem( listRecordItem )
+                self.getControl( 120 ).addItem( listRecordItem )
 
-            #print '%s' % ev.desc
+                #print '%s' % ev.desc
+            except:
+                print 'Erreur'
         tps2 = time.time()
         print "tps1 = %f " %tps1
         print "tps2 = %f " %tps2
