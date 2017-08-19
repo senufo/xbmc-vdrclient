@@ -108,7 +108,7 @@ class EPGWindow(xbmcgui.WindowXML):
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lstc')
         self.channels = []
-        for num, flag, message in self.vdrpclient.read_response(): 
+        for num, flag, message in self.vdrpclient.read_response():
             ch = channel.Channel(message)
             self.channels.append(ch)
         self.vdrpclient.close() 
@@ -117,7 +117,7 @@ class EPGWindow(xbmcgui.WindowXML):
         """
         Init Class EPGWIndow
         """
-        debug ( "Branch Master")
+        debug ( "Branch Master : Class EPGWindow")
         for ch in self.channels:
             #Affiche le numero et le nom de la chaine
             listChannel = xbmcgui.ListItem(label=ch.no, label2=ch.name_tok)
@@ -141,10 +141,6 @@ class EPGWindow(xbmcgui.WindowXML):
         #On remet à zéro la liste des epg
         self.getControl( EPG_LIST ).reset()
 
-        #for c_name in self.channels:
-            #Cherche le numéro de la chaine en fct du nom
-        #    if c_name.name_tok == ch:
-        #        c_no = c_name.no
         #Liste les prog de la chaine c_no
         self.vdrpclient = svdrp.SVDRPClient(VDR_HOST, VDR_PORT)
         self.vdrpclient.send_command('lste %s' % ch_no)
@@ -153,7 +149,7 @@ class EPGWindow(xbmcgui.WindowXML):
         #nbEPG = len(self.vdrpclient.read_response())
         NbEPG = 500
         for num, flag, message in self.vdrpclient.read_response():
-            #print "MESSAGE = %s " % message
+            debug( "156 MESSAGE = %s " % message)
             #Parse l'EPG renvoyé par VDR
             if message[0] == 'T':
                 ev.title = message[2:]
@@ -167,7 +163,7 @@ class EPGWindow(xbmcgui.WindowXML):
                 ev.parseheader(message[2:])
                 ev.source = 'vdr'
             if message[0] == 'e':
-                #debug ( 'Messge = %s' % message)
+                debug ( 'Message EPG = %s' % message)
                 try:
                 #if 1:
                     #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
@@ -316,21 +312,18 @@ class RecordsWindow(xbmcgui.WindowXML):
         end = True
         for i in range(1,NbEPG):
             if end:
-                print "=" * 30
                 ev = event.Event()
                 self.svdrpclient.send_command('lstr %d' % i)
                 for num, flag, message in self.svdrpclient.read_response():
-                    print "%d, %s, %s " % (num, flag, message)
+                    debug("%d, %s, %s " % (num, flag, message))
                     if num != 550:
                         #Parse l'EPG renvoyé par VDR
                         if message[0] == 'T':
                             ev.title = message[2:]
-                            #print "TITLE = %s " % ev.title
                         elif message[0] == 'C':
                             ev.channel = message[2:]
                         elif message[0] == 'S':
                             ev.subtitle = message[2:]
-                            #print "subTITLE = %s " % ev.subtitle
                         elif message[0] == 'D':
                             Description  = message[2:]
                             ev.desc = Description.replace('|','\n')
