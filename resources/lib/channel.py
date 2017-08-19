@@ -106,24 +106,39 @@ class Channel:
         tokens = definition.strip().split(':')
         self.name = tokens[0]
         self.no, self.name = re.split(' ', self.name, maxsplit=1)
-        #print "iNO = %s" % self.no
+        print "iNO = %s" % self.no
+        print "Ch name = %s" % self.name
         self.nametokens = self.name.split(';')
         self.name_tok = self.nametokens[0]
         if len(self.nametokens)>1:
             provider = self.nametokens[1]
 
+        print ("token 0")
         freq = int(tokens[1])
+        print ("token 1")
         pol = tokens[2]
+        print ("token 2")
         source = tokens[3]
+        print ("token 3")
         srate = int(tokens[4])
+        print ("token 4")
         vpid = tokens[5]
+        print ("token 5")
         apids = tokens[6]
-        tpid = int(tokens[7])
+        print ("token 6")
+        #tpid = int(tokens[7])
+        tpid = 0
+        print ("token 7")
         ca = tokens[8]
+        print ("token 8")
         sid = tokens[9]
+        print ("token 9")
         nid = tokens[10]
+        print ("token 10")
         tid = tokens[11]
+        print ("token 11")
         rid = tokens[12]
+        print ("token 12")
 
         tokens = apids.split(';')
         apids = map(str, tokens[0].split(','))
@@ -134,8 +149,8 @@ class Channel:
         #id = string.join([self.source, nid, tid,
         #                               sid, rid], '-')
 
-        #print "%s, %s,%s,%s,%s,%s,%s,%s,%s,%s,%si" % (
-        #    name,nametokens,name_tok,freq,pol,source,srate,vpid,apids,tpid,ca)
+#        print "%s, %s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (
+#            name,nametokens,name_tok,freq,pol,source,srate,vpid,apids,tpid,ca)
 
 
     def parse_key(self, key):
