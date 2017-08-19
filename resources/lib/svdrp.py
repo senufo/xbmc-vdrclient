@@ -15,8 +15,9 @@ import sys
 
 # VDR server
 VDR_HOST = '127.0.0.1'
+VDR_HOST = '192.168.1.6'
 VDR_PORT = 6419
-VDR_PORT = 2001
+#VDR_PORT = 2001
 
 class SVDRPClient(object):
     def __init__(self, host, port):
