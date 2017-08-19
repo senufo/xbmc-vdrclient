@@ -11,10 +11,10 @@ import re
 import sys
 
 # VDR server
-VDR_HOST = '127.0.0.1'
-#VDR_HOST = '192.168.1.10'
+#VDR_HOST = '127.0.0.1'
+VDR_HOST = '192.168.1.6'
 VDR_PORT = 6419
-VDR_PORT = 2001
+#VDR_PORT = 2001
 
 class SVDRPClient(object):
     def __init__(self, host, port):
@@ -71,7 +71,9 @@ NbEPG = 500
 for i in range(1,NbEPG):
     print "=" * 30
     ev = event.Event()
-    client.send_command('lstr %d' % i)
+    print ('lste %d' % i)
+    #client.send_command('lstr %d' % i)
+    client.send_command('lste %d' % i)
     """
     C I-1-1-1007 TMC 
     E 61765 1297366800 7800 0 FF 
@@ -89,9 +91,21 @@ for i in range(1,NbEPG):
     @ <epgsearch><channel>42 -
     TMC</channel><update>0</update><eventid>61765</eventid><bstart>600</bstart><bstop>1800</bstop></epgsearch><pin-plugin><protected>no</protected></pin-plugin> 
     End of recording information 
+
+    C 	<channel id> <channel name>
+    E 	<event id> <start time> <duration> <table id> <version>
+    T 	<title>
+    S 	<short text>
+    D 	<description>
+    G 	<genre> <genre>...
+    R 	<parental rating>
+    X 	<stream> <type> <language> <descr>
+    V 	<vps time>
+    e
+    c
     """
     for num, flag, message in client.read_response():
-        print "%d, %s, %s " % (num, flag, message)
+        #print "%d, %s, %s " % (num, flag, message)
         if num != 550:
             #Parse l'EPG renvoyé par VDR
             if message[0] == 'T':
@@ -99,17 +113,20 @@ for i in range(1,NbEPG):
                 print "TITLE = %s " % ev.title
             elif message[0] == 'C':
                 ev.channel = message[2:]
+                print "channel : %s" % ev.channel
             elif message[0] == 'S':
                 ev.subtitle = message[2:]
                 print "subTITLE = %s " % ev.subtitle
             elif message[0] == 'D':
                 Description  = message[2:]
                 ev.desc = Description.replace('|','\n')
-            elif message[0] == 'E' and message != 'End of recording information':
-                #try:
-                if 1:
+                print "desc : %s" % ev.desc
+            elif message[0] == 'E' and message != 'End of EPG data':
+                try:
+                 print "End : %s " % message
+                 if 1:
                     heure = message[2:].split(' ')
-                    #print "HEURE = %s " % heure
+                    print "HEURE = %s " % heure
                     #(year,mois, mday, heure, min, sec) = time.gmtime(int(ev.start))
                     #Tient compte du fuseau horaire
     #                if time.daylight != 0:
@@ -120,17 +137,22 @@ for i in range(1,NbEPG):
                     #time_start = time.gmtime(int(heure[0]))
                     #time_stop = time.gmtime(int(heure[1]))
                     time_start = time.gmtime(int(heure[1]))
+                    print '------------'
                     #print (year,mois, mday, heure, min, sec)
+                    print '------------'
                     #Debut, Fin et Nom de l'EPG
                     ev.heure_start = '%02d:%02d' % (time_start.tm_hour,time_start.tm_min)
                     ev.date = '%02d-%02d-%04d' % (time_start.tm_wday,
                                                   time_start.tm_mon,time_start.tm_year)
                     ev.duree = '%04d' % int(heure[2])
-                    #epg_data = ('%02d:%02d : %04d-%02d-%02d' % (time_start.tm_hour,time_start.tm_min,
-                    #     time_start.tm_year,time_start.tm_mon, time_start.tm_wday
-                    #     ))
-                    #print "EPD = ->%s<-, duree = %s" % (ev.date, ev.duree)
-        print '=>%s : %s : %s : %s' % (ev.date,ev.heure_start, ev.duree, ev.title)
+                    epg_data = ('%02d:%02d : %04d-%02d-%02d' % (time_start.tm_hour,time_start.tm_min,
+                         time_start.tm_year,time_start.tm_mon, time_start.tm_wday
+                         ))
+                    print "EPD = ->%s<-, duree = %s, start = %s" % (ev.date, ev.duree, ev.heure_start)
+                except:
+                    print ">>>>>>>>>>>ERREUR<<<<<<<<<<<<<<<<<<<"
+                    ev.date = "XX"
+        #print '=>%s : %s : %s : %s' % (ev.date,ev.heure_start, ev.duree, ev.title)
         records.append(ev) 
     else:
         i = 600
