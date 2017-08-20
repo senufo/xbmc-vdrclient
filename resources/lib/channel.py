@@ -102,43 +102,56 @@ class Channel:
         
         All fields of this channel object are set according to the 
         specification string given in the first argument.
+
+        example line :
+        0: Name     |1: Freq  |2: Parameter|3: Delivery Sys|4: Pol|5: Source|6: Srate                             |
+        TF1 (T);SMR6:546000000:B8S0        :T              :27500 :120=27   :0;130=fra@122,131=qaa@122,132=qad@122:
+        7: VPID          |8: APID|9: TPID|10: CA|11: SID|12: NID|13: TID|14: RID
+        0;150=fra,151=fra:0      :1537   :8442  :6      :0
         """
         tokens = definition.strip().split(':')
+        print len(tokens)
         self.name = tokens[0]
         self.no, self.name = re.split(' ', self.name, maxsplit=1)
-        print "iNO = %s" % self.no
-        print "Ch name = %s" % self.name
+        #print "iNO = %s" % self.no
+        #print "Ch name = %s" % self.name
         self.nametokens = self.name.split(';')
         self.name_tok = self.nametokens[0]
         if len(self.nametokens)>1:
             provider = self.nametokens[1]
 
-        print ("token 0")
         freq = int(tokens[1])
-        print ("token 1")
-        pol = tokens[2]
-        print ("token 2")
-        source = tokens[3]
-        print ("token 3")
-        srate = int(tokens[4])
-        print ("token 4")
-        vpid = tokens[5]
-        print ("token 5")
-        apids = tokens[6]
-        print ("token 6")
-        #tpid = int(tokens[7])
-        tpid = 0
-        print ("token 7")
-        ca = tokens[8]
-        print ("token 8")
-        sid = tokens[9]
-        print ("token 9")
-        nid = tokens[10]
-        print ("token 10")
-        tid = tokens[11]
-        print ("token 11")
-        rid = tokens[12]
-        print ("token 12")
+        #Tokens[2] => Parameters
+        #Various parameters, depending on whether this is a DVB-S, DVB-C or DVB-T channel. Each parameter consist of a key character, followed by an integer number that represents the actual setting of that parameter. The valid key characters, their meaning (and allowed values) are
+
+        #B Bandwidth (1712, 5, 6, 7, 8, 10)
+        #C Code rate high priority (0, 12, 23, 34, 35, 45, 56, 67, 78, 89, 910)
+        #D coDe rate low priority (0, 12, 23, 34, 35, 45, 56, 67, 78, 89, 910)
+        #G Guard interval (4, 8, 16, 32, 128, 19128, 19256)
+        #H Horizontal polarization
+        #I Inversion (0, 1)
+        #L Left circular polarization
+        #M Modulation (2, 5, 6, 7, 10, 11, 12, 16, 32, 64, 128, 256, 999)
+        #O rollOff (0, 20, 25, 35)
+        #P stream id (0-255)
+        #R Right circular polarization
+        #S delivery System (0, 1)
+        #T Transmission mode (1, 2, 4, 8, 16, 32)
+        #V Vertical polarization
+        #Y hierarchY (0, 1, 2, 4)
+        parameters = tokens[2]
+        delivery_system = tokens[3]
+        pol = tokens[4]
+        source = tokens[5]
+        srate = tokens[6]
+        vpid = tokens[7]
+        apids = tokens[8]
+        tpid = tokens[9]
+        ca = tokens[10]
+        sid = tokens[11]
+        nid = tokens[12]
+        #tid = tokens[13]
+        #rid = tokens[14]
 
         tokens = apids.split(';')
         apids = map(str, tokens[0].split(','))
@@ -149,8 +162,8 @@ class Channel:
         #id = string.join([self.source, nid, tid,
         #                               sid, rid], '-')
 
-#        print "%s, %s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (
-#            name,nametokens,name_tok,freq,pol,source,srate,vpid,apids,tpid,ca)
+        #print "%s, %s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (
+        #    self.name,self.nametokens,self.name_tok,freq,pol,source,srate,vpid,apids,tpid,ca)
 
 
     def parse_key(self, key):
